@@ -96,6 +96,8 @@ deploy_backend() {
     fi
 
     # Green 컨테이너 시작
+    # docker-compose.yml의 environment 기본값은 docker run에 적용되지 않으므로
+    # 운영 도메인용 CORS_ALLOWED_ORIGINS를 명시적으로 주입한다.
     log_info "Green 컨테이너 기동 중..."
     docker run -d \
         --name "$green" \
@@ -106,6 +108,7 @@ deploy_backend() {
         -e POSTGRES_HOST=sagwim-postgres \
         -e REDIS_HOST=sagwim-redis \
         -e IMAGE_UPLOAD_DIR=/app/uploads/images \
+        -e CORS_ALLOWED_ORIGINS="${CORS_ALLOWED_ORIGINS:-http://sagwim.duckdns.org}" \
         -v sagwim_uploads_data:/app/uploads \
         --health-cmd="wget -qO- http://localhost:8080/actuator/health || exit 1" \
         --health-interval=30s \
