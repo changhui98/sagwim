@@ -1,0 +1,47 @@
+/* ── ConfirmDialog ──
+   PostCreateModal / ProfileEditModal overlay(z-index: 200) 위에
+   표시되어야 하므로 z-index 를 300 으로 지정한다.
+*/
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 300;
+  animation: fadeIn 0.2s var(--ease) both;
+}
+
+.modal {
+  max-width: 380px;
+  width: calc(100% - 32px);
+  padding: var(--sp-8);
+  border-radius: var(--r-xl);
+  background: var(--clr-surface);
+  box-shadow: var(--shadow-lg);
+  animation: scaleIn 0.25s var(--ease) both;
+}
+
+.title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--clr-text);
+  margin: 0 0 var(--sp-2);
+}
+
+.message {
+  font-size: 0.9375rem;
+  color: var(--clr-text-secondary);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.actions {
+  display: flex;
+  gap: var(--sp-3);
+  justify-content: flex-end;
+  margin-top: var(--sp-6);
+}

@@ -1,0 +1,124 @@
+/* ── TabPostList ── */
+
+.wrapper {
+  background: transparent;
+  border: none;
+  border-radius: 0 0 var(--r-xl) var(--r-xl);
+  padding: var(--sp-3) 0 0;
+  box-shadow: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+.actionRow {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.createBtn {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #ffffff;
+  background: var(--clr-accent-gradient);
+  border: none;
+  padding: var(--sp-2) var(--sp-5);
+  border-radius: var(--r-md);
+  cursor: pointer;
+  transition: filter var(--t-fast);
+}
+
+.createBtn:hover {
+  filter: brightness(1.08);
+}
+
+.postList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+.loadMoreRow {
+  display: flex;
+  justify-content: center;
+  padding-top: var(--sp-2);
+}
+
+.loadMoreBtn {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--clr-accent);
+  background: transparent;
+  border: 1px solid var(--clr-accent);
+  padding: var(--sp-2) var(--sp-6);
+  border-radius: var(--r-md);
+  cursor: pointer;
+  transition:
+    background var(--t-fast),
+    color var(--t-fast);
+}
+
+.loadMoreBtn:hover:not(:disabled) {
+  background: var(--clr-accent-muted);
+}
+
+.loadMoreBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.loadingRow {
+  display: flex;
+  justify-content: center;
+  padding: var(--sp-3) 0;
+}
+
+.loadingText {
+  font-size: 0.875rem;
+  color: var(--clr-text-muted);
+}
+
+.emptyState {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--sp-12) 0;
+}
+
+.emptyText {
+  font-size: 0.9375rem;
+  color: var(--clr-text-muted);
+  margin: 0;
+}
+
+.errorWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-8) 0;
+}
+
+.errorText {
+  font-size: 0.9375rem;
+  color: var(--clr-error);
+  margin: 0;
+}
+
+.retryBtn {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--clr-text-secondary);
+  background: var(--clr-surface);
+  border: 1px solid var(--clr-border);
+  padding: var(--sp-2) var(--sp-4);
+  border-radius: var(--r-md);
+  cursor: pointer;
+}
+
+.retryBtn:hover {
+  background: var(--clr-surface-2);
+}

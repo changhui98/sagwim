@@ -1,0 +1,119 @@
+/* ============================================================
+   Design Tokens — Sagwim Design System
+   ============================================================ */
+
+:root {
+  /* Brand */
+  --font-brand: 'Playwrite IE', cursive;
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+
+  /* Accent */
+  --clr-accent: #F08080;
+  --clr-accent-hover: #e06060;
+  --clr-accent-muted: rgba(240, 128, 128, 0.12);
+  --clr-accent-glow: rgba(240, 128, 128, 0.25);
+  --clr-accent-gradient: linear-gradient(135deg, #F08080 0%, #f5a0a0 100%);
+
+  /* Semantic */
+  --clr-error: #ef4444;
+  --clr-error-soft: rgba(239, 68, 68, 0.1);
+  --clr-success: #10b981;
+  --clr-success-soft: rgba(16, 185, 129, 0.1);
+  --clr-warning: #f59e0b;
+
+  /* Surface — Light Mode */
+  --clr-bg: #F5F5F5;
+  --clr-bg-alt: #ebebeb;
+  --clr-surface: #ffffff;
+  --clr-surface-2: #f9f9f9;
+  --clr-surface-3: #f0f0f0;
+  --clr-border: rgba(0, 0, 0, 0.08);
+  --clr-border-strong: rgba(0, 0, 0, 0.14);
+  --clr-text: #1a1a1a;
+  --clr-text-secondary: #555555;
+  --clr-text-muted: #888888;
+
+  /* Shadows — Light Mode */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.07), 0 1px 3px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.09), 0 2px 6px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.11), 0 4px 12px rgba(0, 0, 0, 0.06);
+  --shadow-card: 0 0 0 1px var(--clr-border), var(--shadow-md);
+  --shadow-focus: 0 0 0 3px var(--clr-accent-muted), 0 0 0 1px var(--clr-accent);
+
+  /* Radius */
+  --r-sm: 6px;
+  --r-md: 10px;
+  --r-lg: 14px;
+  --r-xl: 20px;
+  --r-2xl: 28px;
+  --r-full: 9999px;
+
+  /* Spacing */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 20px;
+  --sp-6: 24px;
+  --sp-8: 32px;
+  --sp-10: 40px;
+  --sp-12: 48px;
+  --sp-16: 64px;
+
+  /* Transition */
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --t-fast: 150ms var(--ease);
+  --t-base: 220ms var(--ease);
+  --t-slow: 380ms var(--ease);
+
+  /* Input / Button (derived) */
+  --input-bg: var(--clr-surface);
+  --input-border: var(--clr-border-strong);
+  --btn-bg: var(--clr-surface);
+  --btn-bg-hover: var(--clr-surface-2);
+  --btn-text: var(--clr-text);
+
+  /* Icon filter */
+  --_icon-filter: none;
+}
+
+[data-theme='dark'] {
+  /* Surface */
+  --clr-bg: #07071a;
+  --clr-bg-alt: #0c0c24;
+  --clr-surface: #0f0f28;
+  --clr-surface-2: #151535;
+  --clr-surface-3: #1c1c44;
+  --clr-border: rgba(255, 255, 255, 0.07);
+  --clr-border-strong: rgba(255, 255, 255, 0.12);
+  --clr-text: #ededf8;
+  --clr-text-secondary: #a8a8cc;
+  --clr-text-muted: #6a6a90;
+
+  /* Accent adjustment */
+  --clr-accent: #F08080;
+  --clr-accent-hover: #e06060;
+  --clr-accent-muted: rgba(240, 128, 128, 0.18);
+  --clr-accent-glow: rgba(240, 128, 128, 0.28);
+  --clr-accent-gradient: linear-gradient(135deg, #F08080 0%, #f5a0a0 100%);
+
+  /* Shadows */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.45), 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.55), 0 2px 6px rgba(0, 0, 0, 0.35);
+  --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.65), 0 4px 12px rgba(0, 0, 0, 0.45);
+  --shadow-card: 0 0 0 1px var(--clr-border), var(--shadow-md);
+  --shadow-focus: 0 0 0 3px var(--clr-accent-muted), 0 0 0 1px var(--clr-accent);
+
+  /* Input / Button */
+  --input-bg: var(--clr-surface-2);
+  --input-border: var(--clr-border-strong);
+  --btn-bg: var(--clr-surface-2);
+  --btn-bg-hover: var(--clr-surface-3);
+  --btn-text: var(--clr-text);
+
+  /* Icon filter — 검정 SVG를 다크 테마에서 밝게 보이게 */
+  --_icon-filter: invert(1) brightness(0.85);
+}

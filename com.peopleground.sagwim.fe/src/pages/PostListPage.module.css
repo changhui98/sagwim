@@ -1,0 +1,70 @@
+/* ── PostListPage ── */
+
+.main {
+  width: 100%;
+  max-width: calc(1280px + var(--layout-sidebar-w));
+  margin: 0 auto;
+  padding: var(--sp-8) var(--sp-6);
+  padding-left: calc(var(--layout-sidebar-w) + var(--sp-6));
+  padding-bottom: calc(var(--sp-8) + var(--layout-bottom-bar-h));
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-6);
+}
+
+.feed {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+  max-width: 680px;
+  width: 100%;
+  margin: 0 auto;
+  position: relative;
+  min-height: 200px;
+}
+
+.skeletonCard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  background: transparent;
+  border-bottom: 1px solid var(--clr-border);
+  padding: var(--sp-5);
+}
+
+/* ── Sentinel (IntersectionObserver 감지용) ── */
+.sentinel {
+  height: 1px;
+  width: 100%;
+}
+
+/* ── Retry Banner ── */
+.retryBanner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-3);
+  padding: var(--sp-4);
+  background: var(--clr-error-soft);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-radius: var(--r-md);
+  max-width: 680px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.retryText {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--clr-error);
+}
+
+@media (max-width: 767px) {
+  .main {
+    padding: var(--sp-4);
+    padding-left: calc(var(--layout-sidebar-w) + var(--sp-4));
+    padding-bottom: calc(var(--sp-4) + var(--layout-bottom-bar-h));
+  }
+
+}

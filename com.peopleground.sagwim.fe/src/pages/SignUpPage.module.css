@@ -1,0 +1,148 @@
+/* ── SignUpPage ── */
+
+.root {
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--sp-6);
+  position: relative;
+  overflow: hidden;
+}
+
+.root::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 65% 50% at 90% 10%, color-mix(in srgb, #8b5cf6 8%, transparent), transparent 55%),
+    radial-gradient(ellipse 55% 60% at 10% 90%, color-mix(in srgb, var(--clr-accent) 7%, transparent), transparent 55%);
+  pointer-events: none;
+}
+
+.card {
+  width: 100%;
+  max-width: 480px;
+  padding: var(--sp-10) var(--sp-8);
+}
+
+.heading {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: var(--sp-1);
+}
+
+.subheading {
+  color: var(--clr-text-muted);
+  font-size: 0.875rem;
+  margin-bottom: var(--sp-8);
+}
+
+/* Two-column layout for some fields */
+.fieldRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-4);
+}
+
+@media (max-width: 520px) {
+  .fieldRow {
+    grid-template-columns: 1fr;
+  }
+
+  .card {
+    padding: var(--sp-8) var(--sp-6);
+  }
+}
+
+.footer {
+  text-align: center;
+  margin-top: var(--sp-5);
+  color: var(--clr-text-muted);
+  font-size: 0.875rem;
+}
+
+.footer a {
+  color: var(--clr-accent);
+  font-weight: 600;
+}
+
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  color: var(--clr-text-muted);
+  font-size: 0.875rem;
+  margin-bottom: var(--sp-6);
+  transition: color var(--t-fast);
+}
+
+.backLink:hover {
+  color: var(--clr-text);
+  opacity: 1;
+}
+
+/* ── Email verification row ── */
+.emailRow {
+  display: flex;
+  gap: var(--sp-2);
+  align-items: stretch;
+}
+
+.emailRow .input {
+  flex: 1;
+  min-width: 0;
+}
+
+.verifyBtn {
+  flex-shrink: 0;
+  white-space: nowrap;
+  font-size: 0.8125rem;
+  padding: 11px var(--sp-3);
+}
+
+.verifiedMessage {
+  margin-top: calc(-1 * var(--sp-2));
+}
+
+@media (max-width: 520px) {
+  .verifyBtn {
+    padding: 11px var(--sp-2);
+    font-size: 0.75rem;
+  }
+}
+
+/* ── Divider ── */
+.divider {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  margin: var(--sp-4) 0;
+  color: var(--clr-text-muted);
+  font-size: 0.8125rem;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--clr-border);
+}
+
+/* ── Password input state feedback ── */
+.pwInput {
+  transition:
+    border-color var(--t-base),
+    box-shadow var(--t-base);
+}
+
+.pwValid {
+  border-color: var(--clr-success) !important;
+  box-shadow: 0 0 0 3px var(--clr-success-soft), 0 0 0 1px var(--clr-success) !important;
+}
+
+.pwInvalid {
+  border-color: var(--clr-error) !important;
+  box-shadow: 0 0 0 3px var(--clr-error-soft), 0 0 0 1px var(--clr-error) !important;
+}

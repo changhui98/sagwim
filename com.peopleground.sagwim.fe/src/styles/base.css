@@ -1,0 +1,74 @@
+/* ============================================================
+   Base Reset & Global Styles — Sagwim
+   ============================================================ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  background-color: var(--clr-bg);
+  color: var(--clr-text);
+  line-height: 1.6;
+  min-height: 100svh;
+  transition:
+    background-color var(--t-slow),
+    color var(--t-slow);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  line-height: 1.25;
+  color: var(--clr-text);
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  color: var(--clr-accent);
+  text-decoration: none;
+  transition: opacity var(--t-fast);
+}
+
+a:hover {
+  opacity: 0.8;
+}
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+}

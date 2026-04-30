@@ -1,0 +1,96 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: sagwim
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:dev}
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 20MB
+  datasource:
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/${POSTGRES_DB}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    defer-datasource-initialization: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: Asia/Seoul
+    open-in-view: false
+  flyway:
+    enabled: true
+    # dev: V1 + V2(시드), prod: V1만 실행
+    locations: classpath:db/migration
+    # V1 스키마가 이미 DB에 적용된 경우 flyway_schema_history가 없어도 V1을 baseline으로 처리
+    # 새 DB에서는 V1부터 정상 실행, 기존 DB에서는 V1 이후부터 실행
+    baseline-on-migrate: true
+    baseline-version: 1
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+  cache:
+    type: redis
+
+## Spring Boot Actuator - 헬스체크 (Docker HEALTHCHECK에서 사용)
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: never
+
+## logging
+logging:
+  charset:
+    console: UTF-8
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} ${LOG_LEVEL_PATTERN:%-5p} ${PID} --- [%15.15t] %-40.40logger{39} :%06L : %m%n"
+  level:
+    root: info
+    web: info
+
+## jwt
+jwt:
+  secret: ${JWT_SECRET}
+  expiration: 2592000000  # 30일 (ms)
+
+## Google Maps API
+google:
+  maps:
+    api-key: ${GOOGLE_MAPS_API_KEY}
+
+## 이미지 업로드 설정
+app:
+  image:
+    upload-dir: ${IMAGE_UPLOAD_DIR:./uploads/images}
+    url-prefix: ${IMAGE_URL_PREFIX:http://localhost:8080/images}
+
+## 소셜 로그인 OAuth2
+oauth2:
+  kakao:
+    client-id: ${KAKAO_CLIENT_ID}
+    client-secret: ${KAKAO_CLIENT_SECRET}
+  google:
+    client-id: ${GOOGLE_CLIENT_ID}
+    client-secret: ${GOOGLE_CLIENT_SECRET}

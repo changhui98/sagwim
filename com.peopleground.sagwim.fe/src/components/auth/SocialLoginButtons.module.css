@@ -1,0 +1,55 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  width: 100%;
+}
+
+.btn {
+  display: grid;
+  grid-template-columns: 20px 1fr;
+  align-items: center;
+  gap: var(--sp-3);
+  width: 100%;
+  padding: 0.75rem var(--sp-4);
+  border-radius: var(--r-md);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: opacity var(--t-fast), box-shadow var(--t-fast);
+  text-align: center;
+}
+
+.btn:hover:not(:disabled) {
+  opacity: 0.9;
+  box-shadow: var(--shadow-sm);
+}
+
+.btn:active:not(:disabled) {
+  opacity: 0.8;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* 카카오 */
+.kakaoBtn {
+  background-color: #FEE500;
+  color: #3B1E1E;
+}
+
+/* 구글 */
+.googleBtn {
+  background-color: #ffffff;
+  color: #1a1a1a;
+  border: 1px solid var(--clr-border-strong);
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}

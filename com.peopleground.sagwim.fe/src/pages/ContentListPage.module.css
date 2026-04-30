@@ -1,0 +1,221 @@
+/* ── ContentListPage ── */
+
+.main {
+  width: min(100%, 1100px);
+  margin: 0 auto;
+  padding: var(--sp-8) var(--sp-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-6);
+}
+
+/* ─ Page header ── */
+.pageHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--sp-3);
+}
+
+.pageHeaderLeft {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+.pageTitle {
+  font-size: 1.375rem;
+  font-weight: 700;
+  color: var(--clr-text);
+  margin: 0;
+}
+
+.totalChip {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 12px;
+  background: var(--clr-accent-muted);
+  color: var(--clr-accent);
+  border-radius: var(--r-full);
+  font-size: 0.8125rem;
+  font-weight: 700;
+}
+
+.refreshButton {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--clr-text-secondary);
+  background: var(--clr-surface);
+  border: 1px solid var(--clr-border);
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: var(--r-md);
+  cursor: pointer;
+  transition: color var(--t-fast), border-color var(--t-fast), background var(--t-fast);
+}
+
+.refreshButton:hover {
+  color: var(--clr-accent);
+  border-color: var(--clr-accent);
+  background: var(--clr-accent-muted);
+}
+
+.refreshButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ─ User table ── */
+.tableWrap {
+  overflow-x: auto;
+  border-radius: var(--r-lg);
+  border: 1px solid var(--clr-border);
+  background: var(--clr-surface);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.table th {
+  background: var(--clr-surface-2);
+  color: var(--clr-text-muted);
+  font-weight: 600;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 10px var(--sp-4);
+  text-align: left;
+  border-bottom: 1px solid var(--clr-border);
+  white-space: nowrap;
+}
+
+.table td {
+  padding: 12px var(--sp-4);
+  border-bottom: 1px solid var(--clr-border);
+  color: var(--clr-text);
+  vertical-align: middle;
+}
+
+.table tr:last-child td {
+  border-bottom: none;
+}
+
+.table tbody tr {
+  transition: background var(--t-fast);
+}
+
+.table tbody tr:hover {
+  background: var(--clr-surface-2);
+}
+
+.tableUsername {
+  font-weight: 600;
+  color: var(--clr-text);
+}
+
+.tableSecondary {
+  color: var(--clr-text-muted);
+  font-size: 0.8125rem;
+}
+
+.emptyRow td {
+  text-align: center;
+  color: var(--clr-text-muted);
+  padding: var(--sp-12) var(--sp-4);
+}
+
+.badgeDeleted {
+  background: var(--clr-error-soft);
+  color: var(--clr-error);
+}
+
+/* ─ Pagination ── */
+.paginationBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--sp-4);
+  flex-wrap: wrap;
+  gap: var(--sp-3);
+}
+
+.paginationInfo {
+  font-size: 0.8125rem;
+  color: var(--clr-text-muted);
+}
+
+.paginationButtons {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-1);
+}
+
+.pageButton {
+  min-width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--clr-text-secondary);
+  background: transparent;
+  border: 1px solid var(--clr-border);
+  border-radius: var(--r-md);
+  cursor: pointer;
+  transition: all var(--t-fast);
+}
+
+.pageButton:hover:not(:disabled) {
+  color: var(--clr-accent);
+  border-color: var(--clr-accent);
+  background: var(--clr-accent-muted);
+}
+
+.pageButton:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.pageButtonActive {
+  composes: pageButton;
+  background: var(--clr-accent);
+  color: #fff;
+  border-color: var(--clr-accent);
+}
+
+.pageButtonActive:hover:not(:disabled) {
+  background: var(--clr-accent-hover);
+  color: #fff;
+}
+
+/* ─ Loading overlay ── */
+.loadingOverlay {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--sp-12);
+  color: var(--clr-text-muted);
+  font-size: 0.875rem;
+}
+
+@media (max-width: 600px) {
+  .main {
+    padding: var(--sp-4);
+  }
+
+  .pageTitle {
+    font-size: 1.125rem;
+  }
+
+  .table th,
+  .table td {
+    padding: 8px var(--sp-3);
+  }
+}

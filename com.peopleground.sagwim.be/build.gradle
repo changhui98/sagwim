@@ -1,0 +1,112 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '4.0.4'
+	id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com.peopleground'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(25)
+	}
+}
+
+ext {
+    queryDslVersion = "7.1"
+    lombokVersion = "1.18.42"
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
+    // postgresql
+	runtimeOnly 'org.postgresql:postgresql'
+    implementation 'org.hibernate.orm:hibernate-spatial'
+    implementation 'org.locationtech.jts:jts-core'
+
+    //jwt
+    compileOnly group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'
+    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.5'
+    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.5'
+
+    //swagger
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.0'
+
+    // querydsl
+    implementation("io.github.openfeign.querydsl:querydsl-jpa:${queryDslVersion}")
+    annotationProcessor("io.github.openfeign.querydsl:querydsl-apt:${queryDslVersion}:jakarta")
+    testAnnotationProcessor("io.github.openfeign.querydsl:querydsl-apt:${queryDslVersion}:jakarta")
+
+    // validation
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	testImplementation 'org.springframework.boot:spring-boot-starter-validation-test'
+
+    // lombok
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+
+    // p6spy
+    implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:2.0.0'
+
+    // flyway - DB 마이그레이션
+    implementation 'org.flywaydb:flyway-core'
+    implementation 'org.flywaydb:flyway-database-postgresql'
+
+    // actuator - 헬스체크 엔드포인트 (/actuator/health)
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+    // mail
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+    // Redis - 조회수, 좋아요 카운트, 인기 태그, 게시글 목록 캐싱을 위한 인메모리 데이터 스토어
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
+}
+
+def loadEnv() {
+    def envFile = file('.env')
+    def envVars = [:]
+    if (envFile.exists()) {
+        envFile.eachLine { line ->
+            line = line.trim()
+            if (line && !line.startsWith('#') && line.contains('=')) {
+                def idx = line.indexOf('=')
+                def key = line.substring(0, idx).trim()
+                def value = line.substring(idx + 1).trim()
+                envVars[key] = value
+            }
+        }
+    }
+    return envVars
+}
+
+bootRun {
+	jvmArgs = ['-Duser.timezone=UTC']
+	environment loadEnv()
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+	jvmArgs = ['-Duser.timezone=UTC']
+	environment loadEnv()
+}

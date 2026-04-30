@@ -1,0 +1,209 @@
+/* ── ScheduleCalendar ── */
+
+.calendar {
+  background: transparent;
+  border-radius: var(--r-xl);
+  padding: var(--sp-4);
+  box-shadow: none;
+  border: none;
+}
+
+/* 헤더 */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--sp-4);
+  padding: 0 var(--sp-2);
+}
+
+.monthLabel {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--clr-text);
+}
+
+.navBtn {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid var(--clr-border);
+  border-radius: var(--r-md);
+  font-size: 1.25rem;
+  color: var(--clr-text-secondary);
+  cursor: pointer;
+  transition:
+    background var(--t-fast),
+    color var(--t-fast),
+    border-color var(--t-fast);
+  line-height: 1;
+}
+
+.navBtn:hover {
+  background: var(--clr-accent-muted);
+  color: var(--clr-accent);
+  border-color: var(--clr-accent);
+}
+
+/* 7열 그리드 */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+
+/* 요일 헤더 셀 */
+.weekdayCell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--clr-text-muted);
+  padding-bottom: var(--sp-1);
+}
+
+.weekdayCell.sunday {
+  color: #ef4444;
+}
+
+.weekdayCell.saturday {
+  color: #3b82f6;
+}
+
+/* 빈 셀 */
+.emptyCell {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+}
+
+/* 날짜 셀 */
+.dayCell {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 2px;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  padding-top: var(--sp-2);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--r-md);
+  cursor: pointer;
+  transition:
+    background var(--t-fast),
+    border-color var(--t-fast);
+}
+
+.dayCell:hover {
+  background: var(--clr-surface-2);
+  border-color: var(--clr-border);
+}
+
+.dayCell.sunday .dayNumber {
+  color: #ef4444;
+}
+
+.dayCell.saturday .dayNumber {
+  color: #3b82f6;
+}
+
+.dayNumber {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--clr-text);
+  line-height: 1;
+}
+
+.holidayName {
+  font-size: 0.625rem;
+  color: #ef4444;
+  line-height: 1.1;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0 2px;
+}
+
+.dayCell.holiday .dayNumber {
+  color: #ef4444;
+  font-weight: 700;
+}
+
+.holidayNameSubstitute {
+  color: #f59e0b;
+}
+
+.dayCell.substituteHoliday .dayNumber {
+  color: #f59e0b;
+  font-weight: 700;
+}
+
+/* 오늘 */
+.dayCell.today {
+  background: var(--clr-accent-muted);
+  border-color: var(--clr-accent);
+}
+
+.dayCell.today .dayNumber {
+  color: var(--clr-accent);
+  font-weight: 700;
+}
+
+/* 선택된 날 */
+.dayCell.selected {
+  background: var(--clr-accent);
+  border-color: var(--clr-accent);
+}
+
+.dayCell.selected .dayNumber {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.dayCell.selected .holidayName {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.dayCell.selected .dot {
+  background: rgba(255, 255, 255, 0.8);
+}
+
+/* 일정 있는 날 도트 */
+.dot {
+  width: 5px;
+  height: 5px;
+  border-radius: var(--r-full);
+  background: var(--clr-accent);
+  flex-shrink: 0;
+}
+
+/* 오늘이면서 선택된 경우 */
+.dayCell.today.selected {
+  background: var(--clr-accent);
+}
+
+.dayCell.today.selected .dayNumber {
+  color: #ffffff;
+}
+
+@media (max-width: 480px) {
+  .calendar {
+    padding: var(--sp-3);
+  }
+
+  .dayCell {
+    width: 100%;
+  }
+
+  .dayNumber {
+    font-size: 0.8125rem;
+  }
+}

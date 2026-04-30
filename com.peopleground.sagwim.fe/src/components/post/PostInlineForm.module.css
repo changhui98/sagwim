@@ -1,0 +1,105 @@
+/* ── PostInlineForm ── */
+
+.wrapper {
+  background: transparent;
+  border-bottom: 1px solid var(--clr-border);
+  padding: var(--sp-4) var(--sp-5);
+}
+
+.collapsed {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  cursor: text;
+}
+
+.collapsedAvatar {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--r-full);
+  background: var(--clr-accent-muted);
+  color: var(--clr-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  font-weight: 700;
+  flex-shrink: 0;
+  text-transform: uppercase;
+  overflow: hidden;
+}
+
+.collapsedAvatarImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.collapsedPlaceholder {
+  flex: 1;
+  padding: var(--sp-2) var(--sp-3);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--r-full);
+  font-size: 0.875rem;
+  color: var(--clr-text-muted);
+  background: var(--clr-bg);
+  transition: border-color var(--t-fast);
+}
+
+.collapsedPlaceholder:hover {
+  border-color: var(--clr-border-strong);
+}
+
+.expandedForm {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  overflow: hidden;
+  max-height: 400px;
+  opacity: 1;
+  transition:
+    max-height 0.22s ease,
+    opacity 0.22s ease;
+}
+
+.expandedFormHidden {
+  max-height: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.bodyTextarea {
+  width: 100%;
+  padding: var(--sp-2) var(--sp-3);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--r-md);
+  font-size: 0.875rem;
+  color: var(--clr-text);
+  background: var(--clr-bg);
+  resize: vertical;
+  min-height: 80px;
+  max-height: 200px;
+  font-family: inherit;
+  line-height: 1.5;
+  transition: border-color var(--t-fast);
+}
+
+.bodyTextarea:focus {
+  outline: none;
+  border-color: var(--clr-accent);
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--sp-2);
+}
+
+.errorMessage {
+  font-size: 0.8125rem;
+  color: var(--clr-error);
+  margin: 0;
+}
+

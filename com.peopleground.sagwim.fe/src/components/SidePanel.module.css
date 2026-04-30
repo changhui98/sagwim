@@ -1,0 +1,257 @@
+/* ============================================================
+   SidePanel — 인스타그램 스타일 슬라이드 사이드 패널
+   ============================================================ */
+
+.panel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100svh;
+  width: 440px;
+  background: var(--clr-surface);
+  border-right: 1px solid var(--clr-border);
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  z-index: 51;
+  transform: translateX(-100%);
+  transition: transform 280ms var(--ease);
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.panelOpen {
+  transform: translateX(0);
+  pointer-events: auto;
+  visibility: visible;
+}
+
+/* ── 헤더 ──────────────────────────────────────────────────── */
+.panelHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--sp-8) var(--sp-8) var(--sp-8);
+  flex-shrink: 0;
+}
+
+.panelTitle {
+  font-size: 1.625rem;
+  font-weight: 700;
+  color: var(--clr-text);
+  margin: 0;
+}
+
+.closeButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: var(--r-full);
+  color: var(--clr-text-secondary);
+  cursor: pointer;
+  font-size: 1.25rem;
+  transition: background var(--t-fast), color var(--t-fast);
+}
+
+.closeButton:hover {
+  background: var(--clr-accent-muted);
+  color: var(--clr-text);
+}
+
+/* ── 본문 ──────────────────────────────────────────────────── */
+.panelBody {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--sp-4) var(--sp-8) var(--sp-8);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-6);
+}
+
+/* ── 검색 인풋 ─────────────────────────────────────────────── */
+.searchInputWrap {
+  position: relative;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 12px var(--sp-2);
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid var(--clr-border);
+  border-radius: 0;
+  color: var(--clr-text);
+  font-size: 1rem;
+  outline: none;
+  transition: border-color var(--t-fast);
+  box-sizing: border-box;
+}
+
+.searchInput::placeholder {
+  color: var(--clr-text-muted);
+}
+
+.searchInput:focus {
+  border-bottom-color: var(--clr-accent);
+}
+
+.searchInput::-webkit-search-cancel-button {
+  cursor: pointer;
+}
+
+/* ── 섹션 ──────────────────────────────────────────────────── */
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+/* ── 섹션 헤더 (타이틀 + 전체보기) ────────────────────────── */
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sectionTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--clr-text);
+  margin: 0;
+}
+
+.sectionViewAll {
+  font-size: 0.8125rem;
+  color: var(--clr-text-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+  transition: color var(--t-fast);
+}
+
+.sectionViewAll:hover {
+  color: var(--clr-text-secondary);
+}
+
+/* ── 빈 상태 ───────────────────────────────────────────────── */
+.emptyMessage {
+  font-size: 0.9375rem;
+  color: var(--clr-text-muted);
+  margin: var(--sp-6) 0 0;
+  text-align: center;
+}
+
+/* ── 로딩 ──────────────────────────────────────────────────── */
+.loadingWrap {
+  display: flex;
+  justify-content: center;
+  padding: var(--sp-8) 0;
+}
+
+.spinner {
+  width: 24px;
+  height: 24px;
+  border: 2.5px solid var(--clr-border);
+  border-top-color: var(--clr-accent);
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── 검색 결과 목록 ─────────────────────────────────────────── */
+.resultList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+}
+
+.resultItem {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  width: 100%;
+  padding: var(--sp-3) var(--sp-2);
+  background: transparent;
+  border: none;
+  border-radius: var(--r-md);
+  cursor: pointer;
+  text-align: left;
+  transition: background var(--t-fast);
+}
+
+.resultItem:hover {
+  background: var(--clr-accent-muted);
+}
+
+/* ── 아바타 ─────────────────────────────────────────────────── */
+.avatar {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--r-full);
+  overflow: hidden;
+  background: var(--clr-accent-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatarImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatarFallback {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--clr-accent);
+  text-transform: uppercase;
+}
+
+/* ── 결과 텍스트 ────────────────────────────────────────────── */
+.resultMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.resultPrimary {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--clr-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.resultSecondary {
+  font-size: 0.8125rem;
+  color: var(--clr-text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ============================================================
+   Mobile (≤640px) — 하단 바 레이아웃에서는 패널 숨김
+   ============================================================ */
+@media (max-width: 640px) {
+  .panel {
+    display: none;
+  }
+}

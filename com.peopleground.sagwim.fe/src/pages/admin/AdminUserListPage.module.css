@@ -1,0 +1,239 @@
+/* ── AdminUserListPage ── */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-6);
+}
+
+.pageHeader {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--sp-4);
+}
+
+.refreshButton {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--clr-text-secondary);
+  background: var(--clr-surface);
+  border: 1px solid var(--clr-border-strong);
+  padding: var(--sp-1) var(--sp-3);
+  border-radius: var(--r-md);
+  cursor: pointer;
+  transition: background var(--t-fast);
+}
+
+.refreshButton:hover:not(:disabled) {
+  background: var(--clr-surface-2);
+}
+
+.refreshButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.tableCard {
+  background: var(--clr-surface);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  position: relative;
+}
+
+.tableWrap {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.table th {
+  text-align: left;
+  padding: var(--sp-3) var(--sp-4);
+  font-weight: 600;
+  color: #4a1f2a;
+  border-bottom: 1px solid var(--clr-border);
+  font-size: 0.8125rem;
+  background: #ffb6c1;
+}
+
+.table td {
+  padding: var(--sp-3) var(--sp-4);
+  color: var(--clr-text);
+  border-bottom: 1px solid var(--clr-border);
+  vertical-align: middle;
+}
+
+.table tr:last-child td {
+  border-bottom: none;
+}
+
+.tableUsername {
+  font-weight: 600;
+}
+
+.avatarImage {
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  object-fit: cover;
+}
+
+.tableSecondary {
+  color: var(--clr-text-secondary);
+}
+
+.tableDate {
+  color: var(--clr-text-muted);
+  font-size: 0.8125rem;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.table th {
+  white-space: nowrap;
+}
+
+.badgeDeleted {
+  background: var(--clr-error-soft);
+  color: var(--clr-error);
+}
+
+/* ── 가입 경로 뱃지 ── */
+.badgeLocal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: var(--r-sm);
+  background: var(--clr-surface-2, #f3f4f6);
+  color: var(--clr-text-secondary, #6b7280);
+  border: 1px solid var(--clr-border, #e5e7eb);
+}
+
+.badgeKakao {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: var(--r-sm);
+  background: #fef3c7;
+  color: #92400e;
+  border: 1px solid #fde68a;
+}
+
+.badgeGoogle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: var(--r-sm);
+  background: #dbeafe;
+  color: #1e40af;
+  border: 1px solid #bfdbfe;
+}
+
+.deleteButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--sp-1) var(--sp-3);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--clr-error);
+  background: var(--clr-error-soft);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  transition: background var(--t-fast);
+}
+
+.deleteButton:hover {
+  background: rgba(239, 68, 68, 0.18);
+}
+
+.deleteButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.emptyRow td {
+  text-align: center;
+  color: var(--clr-text-muted);
+  padding: var(--sp-8) var(--sp-4);
+}
+
+/* ── Pagination ── */
+.paginationBar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  padding: var(--sp-4);
+  border-top: 1px solid var(--clr-border);
+}
+
+.pageButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 36px;
+  padding: 0 var(--sp-2);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--r-md);
+  background: var(--clr-surface);
+  color: var(--clr-text-secondary);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background var(--t-fast),
+    border-color var(--t-fast),
+    color var(--t-fast);
+}
+
+.pageButton:hover:not(:disabled) {
+  background: var(--clr-surface-2);
+  border-color: var(--clr-border-strong);
+}
+
+.pageButton:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.pageButtonActive {
+  composes: pageButton;
+  background: var(--clr-accent-gradient);
+  color: #ffffff;
+  border-color: transparent;
+}
+
+.pageButtonActive:hover:not(:disabled) {
+  background: var(--clr-accent-gradient);
+  filter: brightness(1.08);
+}
+
+@media (max-width: 768px) {
+  .table {
+    font-size: 0.8125rem;
+  }
+
+  .table th,
+  .table td {
+    padding: var(--sp-2) var(--sp-3);
+  }
+}

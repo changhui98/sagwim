@@ -1,0 +1,194 @@
+# =============================================================================
+# SAGWIM PROJECT .gitignore
+# =============================================================================
+
+# =============================================================================
+# macOS
+# =============================================================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+.AppleDouble
+.LSOverride
+ehthumbs.db
+Icon?
+
+# =============================================================================
+# Windows
+# =============================================================================
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs_vista.db
+desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# =============================================================================
+# Java / Spring Boot
+# =============================================================================
+# Build output
+target/
+*.class
+*.jar
+!gradle-wrapper.jar
+*.war
+*.ear
+*.nar
+
+# Gradle
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# Maven
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+# Spring Boot - 환경별 설정 파일 (application.yml/yaml 은 추적, 환경별은 제외)
+**/src/main/resources/application-dev.yml
+**/src/main/resources/application-dev.yaml
+**/src/main/resources/application-prod.yml
+**/src/main/resources/application-prod.yaml
+**/src/main/resources/application-staging.yml
+**/src/main/resources/application-staging.yaml
+**/src/main/resources/application-local.yml
+**/src/main/resources/application-local.yaml
+
+# Spring Boot - 로컬 실행 pid 파일
+*.pid
+RUNNING_PID
+
+# =============================================================================
+# React / TypeScript / Node.js
+# =============================================================================
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+out/
+.next/
+.nuxt/
+.output/
+
+# TypeScript
+*.tsbuildinfo
+
+# Cache
+.cache/
+.parcel-cache/
+.turbo/
+
+# Vite
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
+
+# =============================================================================
+# 환경변수 파일
+# .env.example 은 제외 (추적 대상)
+# =============================================================================
+.env
+.env.local
+.env.development
+.env.development.local
+.env.test
+.env.test.local
+.env.production
+.env.production.local
+.env.staging
+.env.staging.local
+.env.*.local
+# .env.example 은 의도적으로 추적 (제외하지 않음)
+
+# =============================================================================
+# Claude Code
+# =============================================================================
+.claude/
+
+# 루트 레벨 임시 분석 / 블로그 초안용 마크다운 파일
+# (README.md, CLAUDE.md, CHANGELOG.md 등 공식 문서는 제외)
+/*.md
+!README.md
+!CLAUDE.md
+!CHANGELOG.md
+!CONTRIBUTING.md
+
+# client/ 디렉토리 전체 (임시 기획/요구사항 문서만 있는 폴더)
+client/
+
+# =============================================================================
+# IDE / 에디터
+# =============================================================================
+# IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+
+# Visual Studio Code
+.vscode/
+!.vscode/extensions.json
+!.vscode/settings.json.example
+
+# Eclipse
+.project
+.classpath
+.settings/
+.factorypath
+
+# NetBeans
+nbproject/
+nb-configuration.xml
+
+# STS (Spring Tool Suite)
+.apt_generated
+.springBeans
+.sts4-cache
+
+# =============================================================================
+# 로그 파일
+# =============================================================================
+*.log
+*.log.*
+logs/
+log/
+
+# =============================================================================
+# Docker 관련
+# docker-compose.yml, docker-compose.dev.yml 은 추적 대상 (제외하지 않음)
+# =============================================================================
+docker-compose.override.yml
+docker-compose.local.yml
+.docker/
+
+# =============================================================================
+# 테스트 / 커버리지
+# =============================================================================
+coverage/
+.nyc_output/
+htmlcoverage/
+jacoco.exec
+*.exec
+
+# =============================================================================
+# 임시 파일 / 기타
+# =============================================================================
+tmp/
+temp/
+.tmp/
+*.tmp
+*.bak
+*.swp
+*.swo
+*~
+
+# Package manager lock files (필요 시 주석 해제)
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml

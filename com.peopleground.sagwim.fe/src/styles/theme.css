@@ -1,0 +1,56 @@
+/* ============================================================
+   Theme Switcher Widget — Sagwim
+   ============================================================ */
+
+.theme-switcher {
+  position: fixed;
+  left: var(--sp-4);
+  bottom: var(--sp-4);
+  z-index: 100;
+}
+
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.theme-toggle:focus-visible .theme-track {
+  outline: 2px solid var(--clr-accent);
+  outline-offset: 2px;
+}
+
+.theme-track {
+  width: 62px;
+  height: 34px;
+  border-radius: var(--r-full);
+  border: 1px solid var(--clr-border-strong);
+  background: var(--clr-surface);
+  padding: 3px;
+  display: flex;
+  align-items: center;
+  box-shadow: var(--shadow-sm);
+  transition: background var(--t-base);
+}
+
+.theme-thumb {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--clr-surface-2);
+  border: 1px solid var(--clr-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  line-height: 1;
+  transition: transform var(--t-base);
+  box-shadow: var(--shadow-xs);
+}
+
+.theme-toggle.is-dark .theme-thumb {
+  transform: translateX(28px);
+}

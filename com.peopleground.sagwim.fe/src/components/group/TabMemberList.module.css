@@ -1,0 +1,131 @@
+/* ── TabMemberList ── */
+
+.membersSection {
+  background: transparent;
+  border: none;
+  border-radius: 0 0 var(--r-xl) var(--r-xl);
+  padding: var(--sp-3) 0 0;
+  box-shadow: none;
+}
+
+.memberGrid {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: var(--sp-3);
+}
+
+.memberItem {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-4);
+  padding: var(--sp-4);
+  aspect-ratio: 1 / 1;
+  border-radius: var(--r-lg);
+  background: transparent;
+  border: 1px solid var(--clr-border);
+  transition: background var(--t-fast);
+}
+
+.memberItem:hover {
+  background: transparent;
+}
+
+.memberLink {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-4);
+  text-decoration: none;
+  color: inherit;
+}
+
+.memberAvatarWrap {
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.memberAvatarImg {
+  width: 100px;
+  height: 100px;
+  border-radius: var(--r-full);
+  object-fit: cover;
+  display: block;
+}
+
+.memberAvatar {
+  width: 100px;
+  height: 100px;
+  font-size: 1.75rem;
+  flex-shrink: 0;
+}
+
+.memberInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  text-align: center;
+  min-height: 44px;
+}
+
+.memberNickname {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--clr-text);
+}
+
+.memberJoinedAt {
+  font-size: 0.75rem;
+  color: var(--clr-text-muted);
+}
+
+.leaderBadge {
+  position: absolute;
+  top: var(--sp-2);
+  right: var(--sp-2);
+  color: var(--clr-accent);
+  background: transparent;
+  padding: 0;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.crownIcon {
+  width: 16px;
+  height: 16px;
+  display: block;
+}
+
+.kickButton {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--clr-error);
+  background: transparent;
+  border: 1px solid var(--clr-error);
+  padding: 2px var(--sp-3);
+  border-radius: var(--r-md);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition:
+    background var(--t-fast),
+    color var(--t-fast);
+  margin-top: var(--sp-1);
+}
+
+.kickButton:hover:not(:disabled) {
+  background: var(--clr-error-soft);
+}
+
+.kickButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

@@ -1,0 +1,736 @@
+/* ── GroupDetailPage ── */
+
+.main {
+  width: 100%;
+  max-width: calc(800px + var(--layout-sidebar-w));
+  margin: 0 auto;
+  padding: var(--sp-8) var(--sp-6);
+  padding-left: calc(var(--layout-sidebar-w) + var(--sp-6));
+  padding-bottom: calc(var(--sp-8) + var(--layout-bottom-bar-h));
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-6);
+}
+
+.loadingWrapper {
+  display: flex;
+  justify-content: center;
+  padding: var(--sp-12) 0;
+}
+
+.errorWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-4);
+  padding: var(--sp-12) 0;
+}
+
+.errorText {
+  color: var(--clr-error);
+  font-size: 0.9375rem;
+  margin: 0;
+}
+
+.backButton {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--clr-text-secondary);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
+  width: fit-content;
+  transition: color var(--t-fast);
+}
+
+.backButton:hover {
+  color: var(--clr-accent);
+}
+
+.topRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+}
+
+.topActions {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+.topTextAction {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--clr-text-secondary);
+  background: none;
+  border: none;
+  padding: 0;
+  margin-right: 2px;
+  cursor: pointer;
+  text-align: right;
+  width: fit-content;
+  transition: color var(--t-fast);
+}
+
+.topTextAction:hover:not(:disabled) {
+  color: var(--clr-accent);
+}
+
+.topTextAction:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ── Group Header ── */
+.groupHeader {
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+  box-shadow: none;
+}
+
+.heroMedia {
+  width: 100%;
+  border-radius: calc(var(--r-xl) - 4px);
+  overflow: hidden;
+  background: var(--clr-bg);
+  border: 1px solid var(--clr-border);
+  position: relative;
+}
+
+.heroImage {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+/* 모임장 전용: 사진 영역 클릭 가능 표시 */
+.heroMediaLeader {
+  cursor: pointer;
+}
+
+.heroMediaLeader:hover .heroImageEditOverlay,
+.heroMediaLeader:focus-visible .heroImageEditOverlay {
+  opacity: 1;
+}
+
+/* 플레이스홀더 상태에서 모임장 hover 시 테두리 강조 */
+.heroMediaLeader:hover .heroImagePlaceholder,
+.heroMediaLeader:focus-visible .heroImagePlaceholder {
+  border-color: var(--clr-accent);
+  background: linear-gradient(180deg, var(--clr-accent-muted) 0%, var(--clr-bg) 100%);
+}
+
+.heroMediaLeader:focus-visible {
+  outline: 2px solid var(--clr-accent);
+  outline-offset: 2px;
+}
+
+/* 기존 사진이 있을 때 hover 시 나타나는 오버레이 */
+.heroImageEditOverlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  opacity: 0;
+  transition: opacity var(--t-fast);
+  border-radius: inherit;
+}
+
+.overlayIcon {
+  width: 40px;
+  height: 40px;
+  filter: invert(1);
+  opacity: 0.9;
+}
+
+.overlayText {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.heroImagePlaceholder {
+  min-height: 280px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-3);
+  padding: var(--sp-6);
+  background: linear-gradient(180deg, var(--clr-bg-alt) 0%, var(--clr-bg) 100%);
+  transition:
+    background var(--t-fast),
+    border-color var(--t-fast);
+}
+
+.placeholderIcon {
+  width: 68px;
+  height: 68px;
+  opacity: 0.9;
+}
+
+.placeholderText {
+  margin: 0;
+  font-size: 0.9375rem;
+  color: var(--clr-text-muted);
+  text-align: center;
+}
+
+.groupSummary {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  column-gap: var(--sp-4);
+  row-gap: var(--sp-2);
+  padding: var(--sp-2) var(--sp-2) var(--sp-1);
+  align-items: center;
+}
+
+.badgeRow {
+  grid-column: 1;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  flex-wrap: wrap;
+}
+
+.categoryBadge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--clr-accent);
+  background: var(--clr-accent-muted);
+  padding: 2px var(--sp-2);
+  border-radius: var(--r-full);
+  width: fit-content;
+}
+
+/* 온라인 뱃지: 파란 계열 */
+.meetingTypeBadgeOnline {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #2b6cb0;
+  background: #ebf8ff;
+  padding: 2px var(--sp-2);
+  border-radius: var(--r-full);
+  width: fit-content;
+  border: 1px solid #bee3f8;
+}
+
+/* 오프라인 뱃지: 초록 계열 */
+.meetingTypeBadgeOffline {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #276749;
+  background: #f0fff4;
+  padding: 2px var(--sp-2);
+  border-radius: var(--r-full);
+  width: fit-content;
+  border: 1px solid #c6f6d5;
+}
+
+[data-theme='dark'] .meetingTypeBadgeOnline {
+  background: rgba(49, 130, 206, 0.15);
+  color: #63b3ed;
+  border-color: rgba(49, 130, 206, 0.3);
+}
+
+[data-theme='dark'] .meetingTypeBadgeOffline {
+  background: rgba(56, 161, 105, 0.15);
+  color: #68d391;
+  border-color: rgba(56, 161, 105, 0.3);
+}
+
+
+.groupName {
+  grid-column: 1;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--clr-text);
+  margin: 0;
+}
+
+/* ── 좋아요 영역: 하트 + 숫자를 나란히 배치 ── */
+.likeArea {
+  grid-column: 2;
+  justify-self: end;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+}
+
+/* 하트 버튼 (토글) */
+.likeHeartButton {
+  display: inline-flex;
+  align-items: center;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: var(--clr-text-muted);
+  transition: color var(--t-fast);
+}
+
+.likeHeartButton:hover:not(:disabled) {
+  color: var(--clr-accent);
+}
+
+.likeHeartButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* 숫자 버튼 (모달 오픈) */
+.likeCountButton {
+  display: inline-flex;
+  align-items: center;
+  background: none;
+  border: none;
+  padding: 0 0 0 var(--sp-1);
+  cursor: pointer;
+  color: var(--clr-text-muted);
+  transition: color var(--t-fast);
+}
+
+.likeCountButton:hover {
+  color: var(--clr-accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.likeButtonActive {
+  color: var(--clr-accent);
+}
+
+.likeIcon {
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.likeCount {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.groupDescription {
+  grid-column: 1;
+  font-size: 0.9375rem;
+  color: var(--clr-text-secondary);
+  margin: 0;
+  line-height: 1.6;
+}
+
+.memberCountBox {
+  grid-column: 2;
+  justify-self: end;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  background: transparent;
+  border-radius: var(--r-md);
+  padding: var(--sp-2) 0;
+}
+
+.memberCountIcon {
+  width: 16px;
+  height: 16px;
+  display: block;
+  opacity: 1;
+}
+
+.memberCountValue {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--clr-text);
+}
+
+.contentDivider {
+  width: 100%;
+  height: 1px;
+  background: var(--clr-border-strong);
+}
+
+/* ── Action Row ── */
+.actionRow {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.joinButton {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #ffffff;
+  background: var(--clr-accent-gradient);
+  border: none;
+  padding: var(--sp-2) var(--sp-5);
+  border-radius: var(--r-md);
+  cursor: pointer;
+  transition: filter var(--t-fast);
+}
+
+.joinButton:hover:not(:disabled) {
+  filter: brightness(1.08);
+}
+
+.joinButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.leaveButton {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--clr-error);
+  background: var(--clr-error-soft);
+  border: 1px solid var(--clr-error);
+  padding: var(--sp-2) var(--sp-5);
+  border-radius: var(--r-md);
+  cursor: pointer;
+  transition:
+    background var(--t-fast),
+    filter var(--t-fast);
+}
+
+.leaveButton:hover:not(:disabled) {
+  filter: brightness(0.95);
+}
+
+.leaveButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ── Members Section ── */
+.membersSection {
+  background: var(--clr-surface);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--r-xl);
+  padding: var(--sp-6);
+  box-shadow: var(--shadow-sm);
+}
+
+.sectionTitle {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--clr-text);
+  margin: 0 0 var(--sp-4) 0;
+}
+
+.memberList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.memberItem {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-3);
+  border-radius: var(--r-lg);
+  background: var(--clr-surface-2);
+}
+
+.memberAvatar {
+  width: 40px;
+  height: 40px;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.memberInfo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  flex: 1;
+}
+
+.memberNickname {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--clr-text);
+}
+
+.memberUsername {
+  font-size: 0.8125rem;
+  color: var(--clr-text-muted);
+}
+
+.leaderBadge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--clr-accent);
+  background: var(--clr-accent-muted);
+  padding: 2px var(--sp-2);
+  border-radius: var(--r-full);
+  flex-shrink: 0;
+}
+
+.editButton {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--clr-accent);
+  background: transparent;
+  border: 1px solid var(--clr-accent);
+  padding: var(--sp-2) var(--sp-5);
+  border-radius: var(--r-md);
+  cursor: pointer;
+}
+
+.editButton:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.deleteButton {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--clr-error, #e53e3e);
+  background: transparent;
+  border: 1px solid var(--clr-error, #e53e3e);
+  padding: var(--sp-2) var(--sp-5);
+  border-radius: var(--r-md);
+  cursor: pointer;
+}
+
+.deleteButton:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.editForm {
+  background: var(--clr-surface);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--r-xl);
+  padding: var(--sp-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-4);
+}
+
+.editInput {
+  width: 100%;
+  height: 40px;
+  padding: 0 var(--sp-3);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--r-md);
+  background: var(--clr-surface);
+  color: var(--clr-text);
+  font-size: 0.9375rem;
+  box-sizing: border-box;
+  outline: none;
+}
+
+.editInput:focus { border-color: var(--clr-accent); }
+
+.editTextarea {
+  width: 100%;
+  padding: var(--sp-3);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--r-md);
+  background: var(--clr-surface);
+  color: var(--clr-text);
+  font-size: 0.9375rem;
+  box-sizing: border-box;
+  resize: vertical;
+  outline: none;
+}
+
+.editTextarea:focus { border-color: var(--clr-accent); }
+
+.editSelect {
+  width: 100%;
+  height: 40px;
+  padding: 0 var(--sp-3);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--r-md);
+  background: var(--clr-surface);
+  color: var(--clr-text);
+  font-size: 0.875rem;
+  cursor: pointer;
+  outline: none;
+}
+
+/* ── Edit Form Meeting Type Toggle ── */
+.editMeetingTypeToggle {
+  display: flex;
+  gap: var(--sp-2);
+}
+
+.editMeetingTypeBtn {
+  flex: 1;
+  padding: var(--sp-2) var(--sp-3);
+  font-size: 0.875rem;
+  font-weight: 600;
+  border-radius: var(--r-md);
+  border: 1.5px solid var(--clr-border);
+  background: var(--clr-surface);
+  color: var(--clr-text-secondary);
+  cursor: pointer;
+  transition:
+    border-color var(--t-fast),
+    background var(--t-fast),
+    color var(--t-fast);
+}
+
+.editMeetingTypeBtn:hover:not(:disabled) {
+  border-color: var(--clr-accent);
+  color: var(--clr-text);
+}
+
+.editMeetingTypeBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.editMeetingTypeBtnActive {
+  border-color: #38a169;
+  background: #f0fff4;
+  color: #276749;
+}
+
+.editMeetingTypeBtnOnline {
+  border-color: #3182ce;
+  background: #ebf8ff;
+  color: #2b6cb0;
+}
+
+[data-theme='dark'] .editMeetingTypeBtnActive {
+  background: rgba(56, 161, 105, 0.15);
+  color: #68d391;
+  border-color: #38a169;
+}
+
+[data-theme='dark'] .editMeetingTypeBtnOnline {
+  background: rgba(49, 130, 206, 0.15);
+  color: #63b3ed;
+  border-color: #3182ce;
+}
+
+/* ── EditForm Region Picker ── */
+.editRegionPickerBtn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 40px;
+  padding: 0 var(--sp-3);
+  font-size: 0.875rem;
+  background: var(--clr-surface-2);
+  border: 1px solid var(--clr-border-strong);
+  border-radius: var(--r-md);
+  cursor: pointer;
+  text-align: left;
+  transition: border-color var(--t-fast);
+  box-sizing: border-box;
+}
+
+.editRegionPickerBtn:hover:not(:disabled) {
+  border-color: var(--clr-accent);
+}
+
+.editRegionPickerBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.editRegionPickerValue {
+  color: var(--clr-text);
+  font-weight: 500;
+}
+
+.editRegionPickerPlaceholder {
+  color: var(--clr-text-muted);
+}
+
+.editRegionPickerArrow {
+  font-size: 1.1rem;
+  color: var(--clr-text-muted);
+  margin-left: var(--sp-2);
+}
+
+.editButtonRow {
+  display: flex;
+  gap: var(--sp-3);
+  justify-content: flex-end;
+}
+
+.cancelButton {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--clr-text-secondary);
+  background: var(--clr-surface);
+  border: 1px solid var(--clr-border);
+  padding: var(--sp-2) var(--sp-4);
+  border-radius: var(--r-md);
+  cursor: pointer;
+}
+
+.cancelButton:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.saveButton {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #ffffff;
+  background: var(--clr-accent-gradient);
+  border: none;
+  padding: var(--sp-2) var(--sp-5);
+  border-radius: var(--r-md);
+  cursor: pointer;
+}
+
+.saveButton:hover:not(:disabled) { filter: brightness(1.08); }
+.saveButton:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.kickButton {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--clr-error, #e53e3e);
+  background: transparent;
+  border: 1px solid var(--clr-error, #e53e3e);
+  padding: 2px var(--sp-3);
+  border-radius: var(--r-md);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.kickButton:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ── Tab Section ── */
+.tabSection {
+  display: flex;
+  flex-direction: column;
+  /* 탭 네비게이션과 탭 콘텐츠 패널 사이 gap 없음 — 시각적 연결을 위해 border-radius 이어받음 */
+}
+
+@media (max-width: 767px) {
+  .main {
+    padding: var(--sp-4);
+    padding-left: calc(var(--layout-sidebar-w) + var(--sp-4));
+    padding-bottom: calc(var(--sp-4) + var(--layout-bottom-bar-h));
+  }
+
+  .groupHeader {
+    flex-direction: column;
+  }
+
+  .topRow {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .heroImagePlaceholder {
+    min-height: 220px;
+  }
+
+}

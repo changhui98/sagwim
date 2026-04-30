@@ -1,0 +1,105 @@
+/* ============================================================
+   Layout Utilities — Sagwim
+   ============================================================ */
+
+/* ── Sidebar width tokens ──────────────────────────────────── */
+/* 사이드바는 기본 collapsed(72px) 상태이며, hover 시에만 overlay 방식으로
+   244px로 확장되므로 콘텐츠 padding은 항상 collapsed 너비로 고정합니다. */
+:root {
+  --layout-sidebar-w: 72px;
+  --layout-bottom-bar-h: 0px;
+}
+
+@media (max-width: 640px) {
+  :root {
+    --layout-sidebar-w: 0px;
+    --layout-bottom-bar-h: 56px;
+  }
+}
+
+/* ── Page Container ────────────────────────────────────────── */
+.page {
+  width: min(100%, 960px);
+  margin: 0 auto;
+  padding: var(--sp-6);
+}
+
+.page-centered {
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.page-narrow {
+  max-width: 440px;
+}
+
+/* ── Header row ────────────────────────────────────────────── */
+.header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--sp-4);
+}
+
+/* ── Grid ──────────────────────────────────────────────────── */
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-4);
+}
+
+@media (max-width: 640px) {
+  .grid-2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Flex helpers ──────────────────────────────────────────── */
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.items-center { align-items: center; }
+.items-start { align-items: flex-start; }
+.justify-between { justify-content: space-between; }
+.justify-center { justify-content: center; }
+.flex-1 { flex: 1; }
+.flex-wrap { flex-wrap: wrap; }
+
+.gap-1 { gap: var(--sp-1); }
+.gap-2 { gap: var(--sp-2); }
+.gap-3 { gap: var(--sp-3); }
+.gap-4 { gap: var(--sp-4); }
+.gap-6 { gap: var(--sp-6); }
+
+/* ── Spacing helpers ───────────────────────────────────────── */
+.mt-2 { margin-top: var(--sp-2); }
+.mt-4 { margin-top: var(--sp-4); }
+.mt-6 { margin-top: var(--sp-6); }
+.mb-2 { margin-bottom: var(--sp-2); }
+.mb-4 { margin-bottom: var(--sp-4); }
+.mb-6 { margin-bottom: var(--sp-6); }
+
+/* ── Typography helpers ────────────────────────────────────── */
+.text-center { text-align: center; }
+.text-right  { text-align: right; }
+.text-sm     { font-size: 0.875rem; }
+.text-xs     { font-size: 0.8125rem; }
+.text-muted  { color: var(--clr-text-muted); }
+.text-secondary { color: var(--clr-text-secondary); }
+.font-semibold { font-weight: 600; }
+.font-bold     { font-weight: 700; }
+
+/* ── Section spacer ────────────────────────────────────────── */
+.section-gap {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+/* ── Responsive ────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .page {
+    padding: var(--sp-4);
+  }
+}

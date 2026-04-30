@@ -1,0 +1,237 @@
+/* ── DashboardPage ── */
+
+/* ─ Top Navbar ── */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: color-mix(in srgb, var(--clr-surface) 85%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--clr-border);
+  padding: 0 var(--sp-6);
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-4);
+}
+
+.navBrand {
+  font-family: var(--font-brand) !important;
+  font-size: 1.5rem;
+  font-weight: 300;
+  color: var(--clr-text);
+  line-height: 1;
+}
+
+.navRight {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+/* ─ Main layout ── */
+.main {
+  width: min(100%, 1100px);
+  margin: 0 auto;
+  padding: var(--sp-8) var(--sp-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-6);
+}
+
+/* ─ Section heading ── */
+.sectionTitle {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: var(--clr-text);
+  margin-bottom: var(--sp-4);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+.sectionTitle::before {
+  content: '';
+  display: inline-block;
+  width: 3px;
+  height: 1em;
+  border-radius: var(--r-full);
+  background: var(--clr-accent-gradient);
+}
+
+/* ─ User table ── */
+.tableWrap {
+  overflow-x: auto;
+  border-radius: var(--r-lg);
+  border: 1px solid var(--clr-border);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.table th {
+  background: var(--clr-surface-2);
+  color: var(--clr-text-muted);
+  font-weight: 600;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 10px var(--sp-4);
+  text-align: left;
+  border-bottom: 1px solid var(--clr-border);
+  white-space: nowrap;
+}
+
+.table td {
+  padding: 12px var(--sp-4);
+  border-bottom: 1px solid var(--clr-border);
+  color: var(--clr-text);
+  vertical-align: middle;
+}
+
+.table tr:last-child td {
+  border-bottom: none;
+}
+
+.table tbody tr {
+  transition: background var(--t-fast);
+}
+
+.table tbody tr:hover {
+  background: var(--clr-surface-2);
+}
+
+.tableUsername {
+  font-weight: 600;
+  color: var(--clr-text);
+}
+
+.tableSecondary {
+  color: var(--clr-text-muted);
+  font-size: 0.8125rem;
+}
+
+.emptyRow td {
+  text-align: center;
+  color: var(--clr-text-muted);
+  padding: var(--sp-8);
+}
+
+/* ─ Pagination row ── */
+.tableFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--sp-4) var(--sp-4) 0;
+  flex-wrap: wrap;
+  gap: var(--sp-3);
+}
+
+/* ─ Profile display ── */
+.profileCard {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  padding: var(--sp-5) var(--sp-5);
+  background: var(--clr-surface-2);
+  border-radius: var(--r-lg);
+  border: 1px solid var(--clr-border);
+  margin-bottom: var(--sp-4);
+}
+
+.profileInfo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+}
+
+.profileName {
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.profileMeta {
+  font-size: 0.8125rem;
+  color: var(--clr-text-muted);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-3);
+}
+
+/* ─ Two-panel layout (users + profile) ── */
+.panelGrid {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: var(--sp-6);
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .panelGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ─ Form grid ── */
+.formGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-4);
+}
+
+@media (max-width: 600px) {
+  .formGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .main {
+    padding: var(--sp-4);
+  }
+}
+
+/* ─ Spacing utilities ── */
+.mb4 {
+  margin-bottom: var(--sp-4);
+}
+
+.mb6 {
+  margin-bottom: var(--sp-6);
+}
+
+.py4 {
+  padding: var(--sp-4) 0;
+}
+
+/* ─ Badge deleted ── */
+.badgeDeleted {
+  background: var(--clr-error-soft);
+  color: var(--clr-error);
+}
+
+/* ─ Password input state feedback ── */
+.pwValid {
+  border-color: var(--clr-success) !important;
+  box-shadow: 0 0 0 3px var(--clr-success-soft), 0 0 0 1px var(--clr-success) !important;
+}
+
+.pwInvalid {
+  border-color: var(--clr-error) !important;
+  box-shadow: 0 0 0 3px var(--clr-error-soft), 0 0 0 1px var(--clr-error) !important;
+}
+
+/* ─ User count chip ── */
+.countChip {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 10px;
+  background: var(--clr-accent-muted);
+  color: var(--clr-accent);
+  border-radius: var(--r-full);
+  font-size: 0.78rem;
+  font-weight: 700;
+}

@@ -1,0 +1,50 @@
+/* ── TabSchedule ── */
+
+.wrapper {
+  background: transparent;
+  border: none;
+  border-radius: 0 0 var(--r-xl) var(--r-xl);
+  padding: var(--sp-3) 0 0;
+  box-shadow: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-5);
+}
+
+.actionRow {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.createBtn {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #ffffff;
+  background: var(--clr-accent-gradient);
+  border: none;
+  padding: var(--sp-2) var(--sp-5);
+  border-radius: var(--r-md);
+  cursor: pointer;
+  transition: filter var(--t-fast);
+}
+
+.createBtn:hover {
+  filter: brightness(1.08);
+}
+
+.loadingWrapper {
+  display: flex;
+  justify-content: center;
+  padding: var(--sp-8) 0;
+}
+
+.loadingText {
+  font-size: 0.9375rem;
+  color: var(--clr-text-muted);
+}
+
+.loadingInline {
+  display: flex;
+  justify-content: center;
+  padding-top: var(--sp-1);
+}

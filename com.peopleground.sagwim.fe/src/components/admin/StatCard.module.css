@@ -1,0 +1,39 @@
+/* ── StatCard ── */
+
+.card {
+  border-radius: var(--r-xl);
+  padding: var(--sp-6);
+  background: var(--clr-surface);
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.cardAccent {
+  composes: card;
+  border-left: 3px solid var(--clr-accent);
+}
+
+.title {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--clr-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin: 0;
+}
+
+.value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--clr-text);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.subtitle {
+  font-size: 0.8125rem;
+  color: var(--clr-text-secondary);
+  margin: 0;
+}

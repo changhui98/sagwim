@@ -1,0 +1,27 @@
+# 빌드 캐시 불필요 파일
+.gradle/
+build/
+out/
+
+# 개발 환경 파일
+.env
+.env.*
+*.local
+
+# 로컬 업로드 파일 (Docker 볼륨으로 관리)
+uploads/
+
+# 문서/설정
+.idea/
+*.iml
+CLAUDE.md
+*.md
+docs/
+
+# 테스트 리포트
+test-output/
+reports/
+
+# OS
+.DS_Store
+Thumbs.db

@@ -1,0 +1,37 @@
+/* ── LoadingSpinner ── */
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+[data-theme='dark'] .overlay {
+  background: rgba(7, 7, 26, 0.6);
+}
+
+.spinner {
+  border: 2px solid var(--clr-border);
+  border-top-color: var(--clr-accent);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+.sm {
+  width: 20px;
+  height: 20px;
+}
+
+.md {
+  width: 28px;
+  height: 28px;
+}
+
+.lg {
+  width: 40px;
+  height: 40px;
+}

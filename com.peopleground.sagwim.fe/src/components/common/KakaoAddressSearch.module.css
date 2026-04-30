@@ -1,0 +1,57 @@
+.wrapper {
+  display: flex;
+  gap: var(--sp-2);
+  align-items: stretch;
+}
+
+.input {
+  flex: 1;
+  min-width: 0;
+}
+
+.searchBtn {
+  flex-shrink: 0;
+  white-space: nowrap;
+  padding: 0 var(--sp-4);
+  font-size: 0.875rem;
+}
+
+.layerOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--sp-4);
+}
+
+.layerPanel {
+  width: min(92vw, 560px);
+  height: min(82vh, 700px);
+  background: var(--clr-surface);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.layerClose {
+  align-self: flex-end;
+  margin: var(--sp-2) var(--sp-2) 0 0;
+  padding: 4px var(--sp-2);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--r-sm);
+  background: var(--clr-surface);
+  color: var(--clr-text-secondary);
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+.layerBody {
+  flex: 1;
+  min-height: 0;
+}

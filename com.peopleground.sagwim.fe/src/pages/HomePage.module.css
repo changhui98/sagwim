@@ -1,0 +1,88 @@
+/* ── HomePage: full-screen centered auth layout ── */
+
+.root {
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--sp-6);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Ambient background glows */
+.root::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 70% 55% at 15% 25%, color-mix(in srgb, var(--clr-accent) 9%, transparent), transparent 55%),
+    radial-gradient(ellipse 55% 55% at 85% 75%, color-mix(in srgb, #8b5cf6 7%, transparent), transparent 55%);
+  pointer-events: none;
+}
+
+/* ── Card ── */
+.card {
+  width: 100%;
+  max-width: 420px;
+  padding: var(--sp-10) var(--sp-8);
+}
+
+/* ── Brand area (Sagwim title + tagline) ── */
+.brand {
+  text-align: center;
+  margin-bottom: var(--sp-8);
+}
+
+.brandMark {
+  width: 4.5rem;
+  height: 4.5rem;
+  display: block;
+  margin: 0 auto var(--sp-4);
+}
+
+.brandName {
+  font-family: var(--font-brand) !important;
+  font-size: 3.75rem;
+  font-weight: 300;
+  color: var(--clr-text);
+  line-height: 1;
+  margin-bottom: var(--sp-2);
+  letter-spacing: 0.01em;
+}
+
+.tagline {
+  color: var(--clr-text-muted);
+  font-size: 0.875rem;
+}
+
+/* ── Form footer link ── */
+.footer {
+  text-align: center;
+  margin-top: var(--sp-5);
+  color: var(--clr-text-muted);
+  font-size: 0.875rem;
+}
+
+.footer a {
+  color: var(--clr-accent);
+  font-weight: 600;
+}
+
+/* ── Divider (소셜 로그인 구분선) ── */
+.divider {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  margin: var(--sp-4) 0;
+  color: var(--clr-text-muted);
+  font-size: 0.8125rem;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--clr-border);
+}

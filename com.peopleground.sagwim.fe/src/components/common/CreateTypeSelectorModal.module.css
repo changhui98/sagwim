@@ -1,0 +1,110 @@
+/* ── CreateTypeSelectorModal ── */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  padding: var(--sp-4);
+  animation: fadeIn 0.2s var(--ease) both;
+}
+
+.modal {
+  width: 100%;
+  max-width: 400px;
+  background: var(--clr-surface);
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: scaleIn 0.25s var(--ease) both;
+}
+
+.header {
+  padding: var(--sp-5) var(--sp-5) var(--sp-3);
+  border-bottom: 1px solid var(--clr-border);
+}
+
+.title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--clr-text);
+  margin: 0;
+  text-align: center;
+}
+
+/* 가로 배치 컨테이너 */
+.buttonRow {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  padding: var(--sp-4) var(--sp-5);
+  gap: 0;
+}
+
+/* 세로 구분선 */
+.divider {
+  width: 1px;
+  background: var(--clr-border);
+  flex-shrink: 0;
+  margin: var(--sp-2) 0;
+}
+
+/* 각 항목 버튼 */
+.optionButton {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-4) var(--sp-3);
+  background: transparent;
+  border: none;
+  border-radius: var(--r-lg);
+  cursor: pointer;
+  transition: background var(--t-fast);
+  text-align: center;
+}
+
+.optionButton:hover {
+  background: var(--clr-accent-muted);
+}
+
+.optionIcon {
+  width: 2.25rem;
+  height: 2.25rem;
+  object-fit: contain;
+  opacity: 0.75;
+  /* 라이트 모드: 그대로, 다크 모드: --icon-filter CSS 변수 활용 */
+  filter: var(--_icon-filter, none);
+}
+
+.optionLabel {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--clr-text);
+}
+
+.optionDesc {
+  font-size: 0.75rem;
+  color: var(--clr-text-muted);
+  line-height: 1.4;
+  word-break: keep-all;
+}
+
+@media (max-width: 640px) {
+  .overlay {
+    padding: var(--sp-4);
+    align-items: flex-end;
+  }
+
+  .modal {
+    max-width: none;
+    border-radius: var(--r-xl) var(--r-xl) 0 0;
+  }
+}

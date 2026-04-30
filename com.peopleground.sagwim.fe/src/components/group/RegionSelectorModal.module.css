@@ -1,0 +1,167 @@
+/* ── RegionSelectorModal ── */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 300;
+  padding: var(--sp-4);
+  animation: fadeIn 0.15s var(--ease) both;
+}
+
+.modal {
+  width: 100%;
+  max-width: 480px;
+  background: var(--clr-surface);
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: scaleIn 0.2s var(--ease) both;
+}
+
+/* ── Header ── */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--sp-4) var(--sp-5);
+  border-bottom: 1px solid var(--clr-border);
+  flex-shrink: 0;
+}
+
+.title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--clr-text);
+  margin: 0;
+}
+
+.closeBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: transparent;
+  border: none;
+  border-radius: var(--r-sm);
+  color: var(--clr-text-muted);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background var(--t-fast), color var(--t-fast);
+}
+
+.closeBtn:hover {
+  background: var(--clr-surface-3);
+  color: var(--clr-text);
+}
+
+/* ── Region Grid ── */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--sp-2);
+  padding: var(--sp-5);
+  overflow-y: auto;
+  max-height: 360px;
+}
+
+.regionBtn {
+  padding: var(--sp-3) var(--sp-2);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  text-align: center;
+  line-height: 1.3;
+  border-radius: var(--r-md);
+  border: 1.5px solid var(--clr-border-strong);
+  background: var(--clr-surface-2);
+  color: var(--clr-text-secondary);
+  cursor: pointer;
+  transition:
+    border-color var(--t-fast),
+    background var(--t-fast),
+    color var(--t-fast);
+  word-break: keep-all;
+}
+
+.regionBtn:hover {
+  border-color: var(--clr-accent);
+  color: var(--clr-text);
+}
+
+.regionBtnActive {
+  border-color: #38a169;
+  background: #f0fff4;
+  color: #276749;
+  font-weight: 700;
+}
+
+[data-theme='dark'] .regionBtnActive {
+  background: rgba(56, 161, 105, 0.15);
+  color: #68d391;
+  border-color: #38a169;
+}
+
+/* ── Footer ── */
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--sp-2);
+  padding: var(--sp-4) var(--sp-5);
+  border-top: 1px solid var(--clr-border);
+  flex-shrink: 0;
+}
+
+.cancelBtn {
+  padding: var(--sp-2) var(--sp-5);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  border-radius: var(--r-md);
+  border: 1.5px solid var(--clr-border-strong);
+  background: var(--clr-surface-2);
+  color: var(--clr-text-secondary);
+  cursor: pointer;
+  transition: background var(--t-fast), color var(--t-fast);
+}
+
+.cancelBtn:hover {
+  background: var(--clr-surface-3);
+  color: var(--clr-text);
+}
+
+.confirmBtn {
+  padding: var(--sp-2) var(--sp-5);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  border-radius: var(--r-md);
+  border: none;
+  background: var(--clr-accent-gradient);
+  color: #fff;
+  cursor: pointer;
+  transition: opacity var(--t-fast);
+}
+
+.confirmBtn:hover:not(:disabled) {
+  opacity: 0.88;
+}
+
+.confirmBtn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+@media (max-width: 480px) {
+  .overlay {
+    padding: var(--sp-3);
+  }
+
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

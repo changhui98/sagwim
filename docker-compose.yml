@@ -1,0 +1,122 @@
+## =====================================================
+## 운영 환경 docker-compose
+## Blue-Green 배포 시 deploy.sh 스크립트가 이 파일을 사용
+## =====================================================
+name: sagwim
+
+services:
+  # ===================================================
+  # PostgreSQL + PostGIS
+  # ===================================================
+  postgres:
+    image: postgis/postgis:16-3.4
+    container_name: sagwim-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./com.peopleground.sagwim.be/database/initdb:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - sagwim-net
+
+  # ===================================================
+  # Redis 7
+  # ===================================================
+  redis:
+    image: redis:7-alpine
+    container_name: sagwim-redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD:-}
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    networks:
+      - sagwim-net
+
+  # ===================================================
+  # 백엔드 (Blue 인스턴스)
+  # Blue-Green 배포 시 sagwim-backend-green이 교체 대상
+  # ===================================================
+  backend:
+    image: sagwim-backend:${BE_IMAGE_TAG:-latest}
+    container_name: sagwim-backend-blue
+    restart: unless-stopped
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      JWT_SECRET: ${JWT_SECRET}
+      GOOGLE_MAPS_API_KEY: ${GOOGLE_MAPS_API_KEY}
+      MAIL_USERNAME: ${MAIL_USERNAME}
+      MAIL_PASSWORD: ${MAIL_PASSWORD}
+      IMAGE_UPLOAD_DIR: /app/uploads/images
+      IMAGE_URL_PREFIX: ${IMAGE_URL_PREFIX:-http://localhost/images}
+      KAKAO_CLIENT_ID: ${KAKAO_CLIENT_ID:-}
+      KAKAO_CLIENT_SECRET: ${KAKAO_CLIENT_SECRET:-}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:-}
+    volumes:
+      - uploads_data:/app/uploads
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8080/actuator/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    networks:
+      - sagwim-net
+
+  # ===================================================
+  # 프론트엔드 (Nginx)
+  # ===================================================
+  frontend:
+    image: sagwim-frontend:${FE_IMAGE_TAG:-latest}
+    container_name: sagwim-frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      # uploads를 Nginx에서도 직접 서빙 (백엔드 거치지 않고 정적 파일 제공)
+      - uploads_data:/app/uploads:ro
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - sagwim-net
+
+volumes:
+  postgres_data:
+  redis_data:
+  uploads_data:
+
+networks:
+  sagwim-net:
+    driver: bridge

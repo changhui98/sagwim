@@ -1,0 +1,21 @@
+# 의존성 (Docker 빌드 내에서 재설치)
+node_modules/
+
+# 빌드 산출물 (Stage 1에서 빌드)
+dist/
+
+# 환경 변수 (빌드 시 ARG로 주입)
+.env
+.env.*
+.env.local
+.env.*.local
+
+# 개발 설정
+.vscode/
+.idea/
+*.md
+CLAUDE.md
+
+# OS
+.DS_Store
+Thumbs.db

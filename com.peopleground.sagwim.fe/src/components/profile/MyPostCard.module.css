@@ -1,0 +1,38 @@
+.card {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 336.44 / 448.58;
+  overflow: hidden;
+  background: var(--clr-bg);
+  cursor: pointer;
+}
+
+.thumbWrap {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.multiBadge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  padding: 5px 9px;
+  border-radius: var(--r-full);
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  font-size: 0.875rem;
+  line-height: 1;
+}
+
+.card:hover {
+  opacity: 0.92;
+}

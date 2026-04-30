@@ -1,0 +1,174 @@
+/* ── GroupLikersModal ── */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  padding: var(--sp-4);
+  animation: fadeIn 0.2s var(--ease) both;
+}
+
+.modal {
+  width: 100%;
+  max-width: 360px;
+  background: var(--clr-surface);
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  height: 50vh;
+  overflow: hidden;
+  animation: scaleIn 0.25s var(--ease) both;
+}
+
+/* ── 헤더 ── */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--sp-4) var(--sp-5);
+  border-bottom: 1px solid var(--clr-border);
+  flex-shrink: 0;
+}
+
+.title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--clr-text);
+  margin: 0;
+}
+
+.closeButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: transparent;
+  border: none;
+  border-radius: var(--r-full);
+  cursor: pointer;
+  color: var(--clr-text-muted);
+  font-size: 0.875rem;
+  transition: background var(--t-fast), color var(--t-fast);
+  flex-shrink: 0;
+}
+
+.closeButton:hover {
+  background: var(--clr-bg-alt);
+  color: var(--clr-text);
+}
+
+/* ── 본문 ── */
+.body {
+  overflow-y: auto;
+  padding: var(--sp-3) var(--sp-5) var(--sp-5);
+  flex: 1;
+}
+
+/* ── 상태 메시지 ── */
+.stateText {
+  text-align: center;
+  color: var(--clr-text-muted);
+  font-size: 0.9375rem;
+  margin: var(--sp-6) 0;
+}
+
+.errorText {
+  text-align: center;
+  color: var(--clr-error);
+  font-size: 0.9375rem;
+  margin: var(--sp-6) 0;
+}
+
+/* ── 목록 ── */
+.likerList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.likerItem {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-2) var(--sp-1);
+  border-radius: var(--r-lg);
+  transition: background var(--t-fast);
+}
+
+.likerItem:hover {
+  background: var(--clr-bg-alt);
+}
+
+/* ── 아바타 ── */
+.avatarImg {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--r-full);
+  object-fit: cover;
+  flex-shrink: 0;
+  display: block;
+}
+
+.avatarFallback {
+  width: 40px;
+  height: 40px;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+/* ── 닉네임 ── */
+.nickname {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--clr-text);
+}
+
+/* ── 무한 스크롤 ── */
+.sentinel {
+  height: 1px;
+  flex-shrink: 0;
+}
+
+.loadingMore {
+  display: flex;
+  justify-content: center;
+  padding: var(--sp-3) 0;
+  flex-shrink: 0;
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--clr-border);
+  border-top-color: var(--clr-primary, #6366f1);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── 모바일 ── */
+@media (max-width: 640px) {
+  .overlay {
+    align-items: flex-end;
+    padding: 0;
+  }
+
+  .modal {
+    max-width: none;
+    border-radius: var(--r-xl) var(--r-xl) 0 0;
+    height: 50vh;
+  }
+}

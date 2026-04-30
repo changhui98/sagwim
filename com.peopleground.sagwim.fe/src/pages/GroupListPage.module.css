@@ -1,0 +1,28 @@
+/* ── GroupListPage ── */
+
+.main {
+  width: 100%;
+  max-width: calc(1280px + var(--layout-sidebar-w));
+  margin: 0 auto;
+  padding: var(--sp-8) var(--sp-6);
+  padding-left: calc(var(--layout-sidebar-w) + var(--sp-6));
+  padding-bottom: calc(var(--sp-8) + var(--layout-bottom-bar-h));
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-6);
+}
+
+@media (max-width: 767px) {
+  .main {
+    padding: var(--sp-4);
+    padding-left: calc(var(--layout-sidebar-w) + var(--sp-4));
+    padding-bottom: calc(var(--sp-4) + var(--layout-bottom-bar-h));
+  }
+}
+
+.divider {
+  border: none;
+  border-top: 1px solid var(--clr-border);
+  margin: 0;
+  opacity: 0.5;
+}

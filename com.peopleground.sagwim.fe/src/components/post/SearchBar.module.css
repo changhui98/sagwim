@@ -1,0 +1,70 @@
+/* ── SearchBar ── */
+
+.container {
+  display: flex;
+  gap: var(--sp-2);
+  width: 100%;
+  max-width: 480px;
+}
+
+.input {
+  flex: 1;
+  padding: 10px var(--sp-4);
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: var(--r-full);
+  font-size: 0.9375rem;
+  color: var(--clr-text);
+  outline: none;
+  transition:
+    border-color var(--t-fast),
+    box-shadow var(--t-fast);
+}
+
+.input::placeholder {
+  color: var(--clr-text-muted);
+}
+
+.input:focus {
+  border-color: var(--clr-accent);
+  box-shadow: var(--shadow-focus);
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px var(--sp-5);
+  background: var(--clr-accent-gradient);
+  color: #ffffff;
+  border: none;
+  border-radius: var(--r-full);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    box-shadow var(--t-fast),
+    transform var(--t-fast);
+}
+
+.button:hover:not(:disabled) {
+  box-shadow: 0 4px 20px var(--clr-accent-glow);
+  transform: translateY(-1px);
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+@media (max-width: 480px) {
+  .container {
+    max-width: 100%;
+  }
+
+  .button {
+    padding: 10px var(--sp-3);
+    font-size: 0.8125rem;
+  }
+}

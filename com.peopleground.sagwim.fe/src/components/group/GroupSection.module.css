@@ -1,0 +1,233 @@
+/* ── GroupSection 공통 컴포넌트 ── */
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.sectionTitle {
+  font-size: 1.375rem;
+  font-weight: 700;
+  color: var(--clr-text);
+  margin: 0;
+}
+
+.sectionSubtitle {
+  font-size: 1rem;
+  color: var(--clr-text-secondary);
+  margin: var(--sp-1) 0 0;
+}
+
+.sectionViewAll {
+  font-size: 0.8125rem;
+  color: var(--clr-text-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+  align-self: center;
+}
+
+.sectionViewAll:hover {
+  color: var(--clr-text-secondary);
+}
+
+.loadingWrapper {
+  display: flex;
+  justify-content: center;
+  padding: var(--sp-12) 0;
+}
+
+.emptyStateCenter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 160px;
+}
+
+/* 반응형 그리드 */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: var(--sp-4);
+}
+
+@media (max-width: 1399px) {
+  .grid { grid-template-columns: repeat(4, 1fr); }
+}
+@media (max-width: 1099px) {
+  .grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 799px) {
+  .grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 499px) {
+  .grid { grid-template-columns: repeat(1, 1fr); }
+}
+
+/* ── GroupCard ── */
+
+.card {
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  text-align: left;
+  border-radius: var(--r-xl);
+  overflow: hidden;
+  padding: 0;
+  transition: transform var(--t-fast);
+  width: 100%;
+  min-width: 0;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+}
+
+.imageWrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: var(--r-xl);
+  overflow: hidden;
+  background: var(--clr-surface-2);
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.imagePlaceholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--clr-surface-2);
+  font-size: 2.5rem;
+}
+
+.imageBadges {
+  position: absolute;
+  top: var(--sp-2);
+  left: var(--sp-2);
+  display: flex;
+  gap: var(--sp-1);
+  flex-wrap: wrap;
+}
+
+.imageBadge {
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: var(--r-full);
+  backdrop-filter: blur(4px);
+}
+
+.imageBadgeOnline {
+  background: rgba(49, 130, 206, 0.8);
+  color: #fff;
+}
+
+.imageBadgeOffline {
+  background: rgba(56, 161, 105, 0.8);
+  color: #fff;
+}
+
+.cardInfo {
+  padding: var(--sp-2) var(--sp-1);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  overflow: hidden;
+}
+
+.cardNameRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-2);
+  width: 100%;
+}
+
+.cardName {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--clr-text);
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cardMemberCount {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  color: var(--clr-text-secondary);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.cardMemberCountIcon {
+  width: 13px;
+  height: 13px;
+  display: block;
+  opacity: 0.7;
+}
+
+.cardDescRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--sp-2);
+  width: 100%;
+  min-height: 1.2em;
+}
+
+.cardDesc {
+  font-size: 0.8125rem;
+  color: var(--clr-text-secondary);
+  margin: 0;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.likeButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: var(--clr-text-muted);
+  font-size: 0.875rem;
+  flex-shrink: 0;
+  transition: color var(--t-fast);
+}
+
+.likeButton:hover {
+  color: var(--clr-accent);
+}
+
+.likeButtonActive {
+  color: var(--clr-accent);
+}

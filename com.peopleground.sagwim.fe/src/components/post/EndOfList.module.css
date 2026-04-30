@@ -1,0 +1,21 @@
+/* ── End of List ── */
+.container {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  padding: var(--sp-6) 0;
+}
+
+.divider {
+  flex: 1;
+  height: 1px;
+  background: var(--clr-border);
+}
+
+.text {
+  margin: 0;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--clr-text-muted);
+  white-space: nowrap;
+}

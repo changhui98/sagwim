@@ -1,0 +1,55 @@
+/* ── EmptyState ── */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--sp-12) var(--sp-6);
+  text-align: center;
+  gap: var(--sp-3);
+}
+
+.icon {
+  font-size: 2.5rem;
+  line-height: 1;
+  opacity: 0.6;
+}
+
+.iconGraphic {
+  font-size: unset;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--clr-text-muted);
+}
+
+.iconGraphic svg {
+  width: 2.75rem;
+  height: 2.75rem;
+  display: block;
+  opacity: 0.85;
+}
+
+.iconGraphicCustom svg {
+  opacity: 1;
+}
+
+.title {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: var(--clr-text);
+  margin: 0;
+}
+
+.description {
+  font-size: 0.875rem;
+  color: var(--clr-text-muted);
+  margin: 0;
+  max-width: 320px;
+  line-height: 1.5;
+}
+
+.actionButton {
+  margin-top: var(--sp-2);
+}

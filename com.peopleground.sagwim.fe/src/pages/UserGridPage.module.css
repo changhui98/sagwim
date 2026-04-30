@@ -1,0 +1,211 @@
+/* ── UserGridPage ── */
+
+.main {
+  width: 100%;
+  max-width: calc(1280px + var(--layout-sidebar-w));
+  margin: 0 auto;
+  padding: var(--sp-8) var(--sp-6);
+  padding-left: calc(var(--layout-sidebar-w) + var(--sp-6));
+  padding-bottom: calc(var(--sp-8) + var(--layout-bottom-bar-h));
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-6);
+}
+
+.pageHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-4);
+}
+
+.pageHeaderLeft {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+.pageTitle {
+  font-size: 1.375rem;
+  font-weight: 700;
+  color: var(--clr-text);
+  margin: 0;
+}
+
+.totalChip {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--clr-accent);
+  background: var(--clr-accent-muted);
+  padding: 2px var(--sp-2);
+  border-radius: var(--r-full);
+}
+
+.refreshButton {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--clr-text-secondary);
+  background: var(--clr-surface);
+  border: 1px solid var(--clr-border-strong);
+  padding: var(--sp-1) var(--sp-3);
+  border-radius: var(--r-md);
+  cursor: pointer;
+  transition:
+    background var(--t-fast),
+    border-color var(--t-fast);
+}
+
+.refreshButton:hover:not(:disabled) {
+  background: var(--clr-surface-2);
+}
+
+.refreshButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--sp-5);
+  position: relative;
+  min-height: 200px;
+}
+
+/* ── UserCard ── */
+.userCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-3);
+  text-align: center;
+  background: var(--clr-surface);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--r-xl);
+  padding: var(--sp-6) var(--sp-4);
+  box-shadow: var(--shadow-sm);
+  transition:
+    transform var(--t-fast),
+    box-shadow var(--t-fast);
+}
+
+.userCard:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.userAvatar {
+  width: 48px;
+  height: 48px;
+  font-size: 1.125rem;
+}
+
+.userNickname {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--clr-text);
+  margin: 0;
+}
+
+.userUsername {
+  font-size: 0.8125rem;
+  color: var(--clr-text-muted);
+  margin: 0;
+}
+
+.userDivider {
+  width: 100%;
+  height: 1px;
+  background: var(--clr-border);
+}
+
+.userEmail {
+  font-size: 0.8125rem;
+  color: var(--clr-text-secondary);
+  word-break: break-all;
+}
+
+.badgeDeleted {
+  background: var(--clr-error-soft);
+  color: var(--clr-error);
+}
+
+.skeletonCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-3);
+  background: var(--clr-surface);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--r-xl);
+  padding: var(--sp-6) var(--sp-4);
+}
+
+/* ── Pagination ── */
+.paginationBar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  padding: var(--sp-4) 0;
+}
+
+.pageButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 36px;
+  padding: 0 var(--sp-2);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--r-md);
+  background: var(--clr-surface);
+  color: var(--clr-text-secondary);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background var(--t-fast),
+    border-color var(--t-fast),
+    color var(--t-fast);
+}
+
+.pageButton:hover:not(:disabled) {
+  background: var(--clr-surface-2);
+  border-color: var(--clr-border-strong);
+}
+
+.pageButton:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.pageButtonActive {
+  composes: pageButton;
+  background: var(--clr-accent-gradient);
+  color: #ffffff;
+  border-color: transparent;
+}
+
+.pageButtonActive:hover:not(:disabled) {
+  background: var(--clr-accent-gradient);
+  filter: brightness(1.08);
+}
+
+@media (max-width: 1279px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 767px) {
+  .main {
+    padding: var(--sp-4);
+    padding-left: calc(var(--layout-sidebar-w) + var(--sp-4));
+    padding-bottom: calc(var(--sp-4) + var(--layout-bottom-bar-h));
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,41 @@
+## =====================================================
+## 개발 환경 docker-compose
+## 인프라(DB, Redis)만 컨테이너로 실행
+## 백엔드/프론트엔드는 로컬에서 직접 실행
+##
+## 사용법:
+##   docker compose -f docker-compose.dev.yml up -d
+## =====================================================
+name: sagwim-dev
+
+services:
+  postgres:
+    image: postgis/postgis:16-3.4
+    container_name: sagwim-dev-postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-userdb}
+      POSTGRES_USER: ${POSTGRES_USER:-user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_dev_data:/var/lib/postgresql/data
+      - ./com.peopleground.sagwim.be/database/initdb:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-user} -d ${POSTGRES_DB:-userdb}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: sagwim-dev-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_dev_data:/data
+    command: redis-server --appendonly yes
+
+volumes:
+  postgres_dev_data:
+  redis_dev_data:

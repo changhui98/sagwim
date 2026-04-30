@@ -1,0 +1,35 @@
+/* ── FAB (모바일/태블릿) ── */
+.fab {
+  position: fixed;
+  bottom: calc(28px + var(--layout-bottom-bar-h));
+  right: 28px;
+  width: 56px;
+  height: 56px;
+  border-radius: var(--r-full);
+  border: none;
+  background: var(--clr-accent-gradient);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 100;
+  box-shadow: var(--shadow-lg), 0 0 20px var(--clr-accent-glow);
+  transition:
+    transform var(--t-base),
+    box-shadow var(--t-base);
+}
+
+.fab:hover {
+  transform: scale(1.08) translateY(-2px);
+  box-shadow: var(--shadow-lg), 0 0 28px var(--clr-accent-glow);
+}
+
+.fab:active {
+  transform: scale(0.96);
+}
+
+/* ── 헤더 버튼 (사용하지 않음) ── */
+.headerButton {
+  display: none;
+}
