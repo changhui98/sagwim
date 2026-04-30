@@ -1,14 +1,31 @@
 ## =====================================================
-## 개발 환경 docker-compose
-## 인프라(DB, Redis)만 컨테이너로 실행
-## 백엔드/프론트엔드는 로컬에서 직접 실행
+## 개발 환경 docker-compose (전체 스택 one-shot 실행)
+##
+## DB + Redis + 백엔드(Gradle bootRun) + 프론트엔드(Vite dev)
+## 백엔드/프론트엔드 소스를 볼륨 마운트해 hot reload 지원
+##
+## 사전 준비:
+##   프로젝트 루트에 .env 파일 생성 (아래 항목 필수)
+##   POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD,
+##   JWT_SECRET, GOOGLE_MAPS_API_KEY,
+##   MAIL_USERNAME, MAIL_PASSWORD,
+##   KAKAO_CLIENT_ID, KAKAO_CLIENT_SECRET,
+##   GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET
 ##
 ## 사용법:
-##   docker compose -f docker-compose.dev.yml up -d
+##   docker compose -f docker-compose.dev.yml up -d          # 백그라운드(detached) 실행
+##   docker compose -f docker-compose.dev.yml up             # 포그라운드 실행 (로그 출력)
+##   docker compose -f docker-compose.dev.yml up -d --build  # 이미지 재빌드 후 백그라운드 실행
+##   docker compose -f docker-compose.dev.yml logs -f        # 실행 중인 컨테이너 로그 확인
+##   docker compose -f docker-compose.dev.yml down           # 중지
+##   docker compose -f docker-compose.dev.yml down -v        # 볼륨까지 삭제 시
 ## =====================================================
 name: sagwim-dev
 
 services:
+  # ===================================================
+  # PostgreSQL 16 + PostGIS 3.4
+  # ===================================================
   postgres:
     image: postgis/postgis:16-3.4
     container_name: sagwim-dev-postgres
@@ -26,7 +43,13 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+      start_period: 20s
+    networks:
+      - sagwim-dev-net
 
+  # ===================================================
+  # Redis 7
+  # ===================================================
   redis:
     image: redis:7-alpine
     container_name: sagwim-dev-redis
@@ -35,7 +58,112 @@ services:
     volumes:
       - redis_dev_data:/data
     command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    networks:
+      - sagwim-dev-net
+
+  # ===================================================
+  # 백엔드 (Spring Boot — Gradle bootRun, hot reload)
+  #
+  # Eclipse Temurin 25 이미지 위에서 Gradle Wrapper를 직접
+  # 실행하므로 별도 Dockerfile 없이 소스 변경이 즉시 반영됨.
+  # Spring Boot DevTools가 없어도 컨테이너 재시작(수초)으로
+  # 변경 사항을 반영할 수 있음 (Ctrl+C → up 재실행).
+  # ===================================================
+  backend:
+    image: eclipse-temurin:25-jdk-alpine
+    container_name: sagwim-dev-backend
+    working_dir: /app
+    # Gradle 캐시를 named volume에 유지해 재시작 시 의존성 재다운로드 방지
+    entrypoint: ["sh", "-c", "chmod +x gradlew && ./gradlew bootRun --no-daemon -Dorg.gradle.jvmargs='-Xmx512m'"]
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: ${POSTGRES_DB:-userdb}
+      POSTGRES_USER: ${POSTGRES_USER:-user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      JWT_SECRET: ${JWT_SECRET}
+      GOOGLE_MAPS_API_KEY: ${GOOGLE_MAPS_API_KEY}
+      MAIL_USERNAME: ${MAIL_USERNAME:-}
+      MAIL_PASSWORD: ${MAIL_PASSWORD:-}
+      IMAGE_UPLOAD_DIR: /app/uploads/images
+      IMAGE_URL_PREFIX: ${IMAGE_URL_PREFIX:-http://localhost:8080/images}
+      KAKAO_CLIENT_ID: ${KAKAO_CLIENT_ID:-}
+      KAKAO_CLIENT_SECRET: ${KAKAO_CLIENT_SECRET:-}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:-}
+      # Gradle User Home을 named volume 경로로 지정 (캐시 재사용)
+      GRADLE_USER_HOME: /root/.gradle
+    ports:
+      - "8080:8080"
+    volumes:
+      # 소스 마운트 (hot reload 핵심: 코드 변경 시 재시작으로 반영)
+      - ./com.peopleground.sagwim.be:/app
+      # Gradle 의존성 캐시 (컨테이너 재시작해도 재다운로드 안 함)
+      - gradle_cache:/root/.gradle
+      # 이미지 업로드 디렉토리
+      - uploads_dev_data:/app/uploads
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8080/actuator/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+      start_period: 300s
+    networks:
+      - sagwim-dev-net
+
+  # ===================================================
+  # 프론트엔드 (Vite dev server — HMR hot reload)
+  #
+  # node_modules는 named volume으로 격리해 호스트 OS와
+  # 컨테이너 간 바이너리 충돌을 방지함.
+  # CHOKIDAR_USEPOLLING: 볼륨 마운트 환경에서 파일 변경 감지
+  # VITE_PROXY_TARGET: 컨테이너 내부에서 backend 서비스명으로 프록시
+  # ===================================================
+  frontend:
+    image: node:22-alpine
+    container_name: sagwim-dev-frontend
+    working_dir: /app
+    entrypoint: ["sh", "-c", "npm install && npm run dev"]
+    environment:
+      # 볼륨 마운트 환경에서 inotify 대신 polling으로 파일 변경 감지
+      CHOKIDAR_USEPOLLING: "true"
+      CHOKIDAR_INTERVAL: "1000"
+      # vite.config.ts의 proxy target을 컨테이너 서비스명으로 오버라이드
+      VITE_PROXY_TARGET: http://backend:8080
+    ports:
+      # Vite dev server 포트 (브라우저 접속: http://localhost:5173)
+      - "5173:5173"
+    volumes:
+      # 소스 마운트 (HMR: 파일 저장 즉시 브라우저에 반영)
+      - ./com.peopleground.sagwim.fe:/app
+      # node_modules는 컨테이너 전용 볼륨으로 격리
+      # (호스트와 컨테이너 간 OS/아키텍처 차이로 인한 바이너리 충돌 방지)
+      - fe_node_modules:/app/node_modules
+    depends_on:
+      - backend
+    networks:
+      - sagwim-dev-net
 
 volumes:
   postgres_dev_data:
   redis_dev_data:
+  uploads_dev_data:
+  gradle_cache:
+  fe_node_modules:
+
+networks:
+  sagwim-dev-net:
+    driver: bridge
