@@ -99,6 +99,8 @@ services:
       KAKAO_CLIENT_SECRET: ${KAKAO_CLIENT_SECRET:-}
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
       GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:-}
+      # CORS 허용 출처 (쉼표로 여러 개 지정 가능)
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost:5173}
       # Gradle User Home을 named volume 경로로 지정 (캐시 재사용)
       GRADLE_USER_HOME: /root/.gradle
     ports:

@@ -76,11 +76,13 @@ google:
   maps:
     api-key: ${GOOGLE_MAPS_API_KEY}
 
-## 이미지 업로드 설정
+## 이미지 업로드 설정 + CORS 허용 출처
 app:
   image:
     upload-dir: ${IMAGE_UPLOAD_DIR:./uploads/images}
     url-prefix: ${IMAGE_URL_PREFIX:http://localhost:8080/images}
+  cors:
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:5173}
 
 ## 소셜 로그인 OAuth2
 oauth2:
