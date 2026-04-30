@@ -18,7 +18,7 @@ spring:
   jpa:
     defer-datasource-initialization: false
     hibernate:
-      ddl-auto: validate
+      ddl-auto: none
     properties:
       hibernate:
         jdbc:
@@ -28,10 +28,6 @@ spring:
     enabled: true
     # dev: V1 + V2(시드), prod: V1만 실행
     locations: classpath:db/migration
-    # V1 스키마가 이미 DB에 적용된 경우 flyway_schema_history가 없어도 V1을 baseline으로 처리
-    # 새 DB에서는 V1부터 정상 실행, 기존 DB에서는 V1 이후부터 실행
-    baseline-on-migrate: true
-    baseline-version: 1
   mail:
     host: smtp.gmail.com
     port: 587
