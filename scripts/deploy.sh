@@ -179,10 +179,20 @@ deploy_frontend() {
 
 # =====================================================
 # 이미지 빌드 함수
+#
+# GitHub Actions로 호출될 때는 워크플로가 이미 빌드/로드한 이미지가
+# 존재하므로 SKIP_BUILD=1 환경변수로 다시 빌드하는 단계를 건너뛴다.
+# (홈서버 디렉토리에 옛날 소스가 남아 있으면 docker build가
+#  최신 이미지를 옛 코드로 덮어써 배포가 무력화될 수 있다.)
 # =====================================================
 build_images() {
     local tag="$1"
     local target="$2"
+
+    if [[ "${SKIP_BUILD:-0}" == "1" ]]; then
+        log_info "SKIP_BUILD=1 — 이미 로드된 이미지를 사용합니다"
+        return 0
+    fi
 
     if [[ "$target" == "be" || "$target" == "all" ]]; then
         log_info "백엔드 이미지 빌드 중 (sagwim-backend:$tag)..."
