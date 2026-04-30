@@ -45,7 +45,7 @@
   font-family: var(--font-brand) !important;
   font-size: 2.5rem;
   font-weight: 300;
-  color: var(--clr-text);
+  color: var(--clr-accent);
   line-height: 1.2;
   margin-top: -0.5rem;
   margin-bottom: var(--sp-3);
