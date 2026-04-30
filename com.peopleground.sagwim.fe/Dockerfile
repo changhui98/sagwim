@@ -13,7 +13,7 @@ RUN npm ci --prefer-offline
 COPY . .
 
 # 빌드 시점 환경변수 (ARG로 받아 .env.production에 주입)
-ARG VITE_API_BASE_URL=/api
+ARG VITE_API_BASE_URL=/api/v1
 ARG VITE_IMAGE_BASE_URL
 ENV VITE_API_BASE_URL=$VITE_API_BASE_URL
 ENV VITE_IMAGE_BASE_URL=$VITE_IMAGE_BASE_URL
