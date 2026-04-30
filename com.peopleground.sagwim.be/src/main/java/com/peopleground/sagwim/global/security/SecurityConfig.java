@@ -74,9 +74,15 @@ public class SecurityConfig {
             // form 로그인/HTTP Basic 비활성화: JWT 기반 Stateless 인증만 사용
             .formLogin(AbstractHttpConfigurer::disable)
             .httpBasic(AbstractHttpConfigurer::disable)
+            // CORS 필터를 Security 체인 최우선으로 등록
+            // — Spring Security의 CorsFilter가 preflight(OPTIONS) 요청을 인증 검사 전에 처리하므로
+            //   CORS 설정이 올바르면 401 없이 200 OK를 반환한다.
             .cors(cors -> cors.configurationSource(corsConfigurationSource))
             .authorizeHttpRequests(auth ->
                 auth
+                    // CORS preflight(OPTIONS) 요청은 인증 없이 허용
+                    // — .cors()만으로도 처리되지만 명시적으로 선언해 의도를 분명히 함
+                    .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                     // Docker 헬스체크 및 모니터링 (인증 불필요)
                     .requestMatchers("/actuator/health").permitAll()
                     // Swagger UI (개발/운영 모두 접근 허용 — 필요 시 prod 프로파일에서 비활성화)
