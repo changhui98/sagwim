@@ -136,6 +136,17 @@ deploy_backend() {
     docker rename "$green" "$blue"
     log_ok "Green → Blue 이름 변경 완료"
 
+    # Nginx upstream DNS 캐시 갱신 (필수)
+    # Nginx는 컨테이너 기동 시 upstream 호스트명(backend)을 DNS resolve해서
+    # IP를 캐시한다. Blue가 교체된 뒤 reload 없이는 죽은 IP로 계속 요청을 보낸다.
+    if docker ps -q -f name="sagwim-frontend" | grep -q .; then
+        log_info "Nginx upstream 갱신을 위해 reload 중..."
+        docker exec sagwim-frontend nginx -s reload
+        log_ok "Nginx reload 완료"
+    else
+        log_warn "sagwim-frontend 컨테이너가 없어 Nginx reload를 건너뜁니다."
+    fi
+
     log_ok "===== 백엔드 배포 완료 ====="
 }
 
