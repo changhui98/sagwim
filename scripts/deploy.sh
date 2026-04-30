@@ -100,6 +100,7 @@ deploy_backend() {
     docker run -d \
         --name "$green" \
         --network sagwim_sagwim-net \
+        --network-alias backend \
         --env-file "$ENV_FILE" \
         -e SPRING_PROFILES_ACTIVE=prod \
         -e POSTGRES_HOST=sagwim-postgres \
