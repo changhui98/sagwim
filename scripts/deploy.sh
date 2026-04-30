@@ -166,7 +166,7 @@ deploy_frontend() {
         --restart unless-stopped \
         "$image"
 
-    if ! health_check "$container" "http://localhost:80/health" 30; then
+    if ! health_check "$container" "http://127.0.0.1:80/health" 30; then
         log_error "프론트엔드 헬스체크 실패"
         exit 1
     fi
