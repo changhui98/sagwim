@@ -1,7 +1,5 @@
 package com.peopleground.sagwim.global.configure;
 
-import com.peopleground.sagwim.global.exception.AppException;
-import com.peopleground.sagwim.user.domain.UserErrorCode;
 import com.peopleground.sagwim.user.domain.entity.User;
 import com.peopleground.sagwim.user.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,8 +17,12 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
+        // DaoAuthenticationProvider는 UsernameNotFoundException을 BadCredentialsException으로
+        // 변환하여 unsuccessfulAuthentication()으로 전달한다.
+        // AppException(RuntimeException)을 던지면 ExceptionTranslationFilter가 가로채
+        // AuthenticationEntryPoint → 401로 잘못 처리된다.
         User user = userRepository.findByUsername(username).orElseThrow(
-            () -> new AppException(UserErrorCode.USER_NOT_FOUND)
+            () -> new UsernameNotFoundException("사용자를 찾을 수 없습니다: " + username)
         );
 
         /**

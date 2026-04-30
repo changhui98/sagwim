@@ -45,9 +45,10 @@ dependencies {
     implementation 'org.locationtech.jts:jts-core'
 
     //jwt
-    compileOnly group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'
-    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.5'
-    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.5'
+    // jjwt 0.12.x부터 Jackson 3.x(tools.jackson) 지원 — Spring Boot 4.x 호환
+    compileOnly group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.12.6'
+    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.12.6'
+    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.12.6'
 
     //swagger
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.0'
