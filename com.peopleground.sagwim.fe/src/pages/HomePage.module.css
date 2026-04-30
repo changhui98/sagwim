@@ -43,7 +43,7 @@
 
 .brandName {
   font-family: var(--font-brand) !important;
-  font-size: 3.75rem;
+  font-size: 2.5rem;
   font-weight: 300;
   color: var(--clr-text);
   line-height: 1;
