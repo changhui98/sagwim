@@ -59,9 +59,10 @@ presentation/
 - **QueryDSL 7.1**: 복잡한 쿼리는 Spring Data JPA와 함께 `XxxQueryRepository` 클래스에서 사용
 - **PostGIS**: 사용자 위치를 `GEOGRAPHY(Point, 4326)` (WGS84)으로 저장; Hibernate Spatial을 통해 JTS `Point` 사용
 - **Geocoding**: 주소 문자열 → Google Geocoding API → `Point` 좌표 변환, 회원가입 시 동기 호출
-- **DDL**: `spring.jpa.hibernate.ddl-auto: create-drop` — 매 시작 시 스키마 재생성 (마이그레이션 도구 없음)
+- **DDL**: `spring.jpa.hibernate.ddl-auto: none` — Flyway가 스키마를 완전히 관리 (Hibernate DDL 비활성화)
+- **Flyway**: `classpath:db/migration` 위치, V1(스키마) + V2(개발용 시드 데이터). baseline-on-migrate 미사용 — 빈 DB에서 V1부터 순차 실행
 - **P6Spy**: 개발 환경에서 SQL 쿼리 로깅 항상 활성화
-- **JWT**: HS256, 만료 1시간, 시크릿 키는 `.env`에서 로드
+- **JWT**: HS256, 만료 30일, 시크릿 키는 `.env`에서 로드
 
 ### API
 
