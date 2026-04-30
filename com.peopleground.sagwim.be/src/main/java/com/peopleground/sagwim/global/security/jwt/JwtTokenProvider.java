@@ -4,15 +4,14 @@ import com.peopleground.sagwim.user.domain.entity.UserRole;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
-import java.security.Key;
 import java.time.Duration;
 import java.util.Date;
 import java.util.UUID;
+import javax.crypto.SecretKey;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -26,9 +25,8 @@ public class JwtTokenProvider {
     @Value("${jwt.secret}")
     private String secret;
 
-    private Key key;
-
-    private final SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
+    // jjwt 0.12.x: Key → SecretKey, SignatureAlgorithm enum 제거됨
+    private SecretKey key;
 
     @Value("${jwt.expiration}")
     private Duration validity;
@@ -45,17 +43,17 @@ public class JwtTokenProvider {
      *  CREATE TOKEN ( id: 사용자 식별자 | username : 사용자 이름 | role : 사용자 권한 )
      */
     public String createToken(UUID id, String username, UserRole roles) {
-        Claims claims = Jwts.claims().setSubject(id.toString());
-        claims.put("username", username);
-        claims.put("roles", roles.toString());
         Date now = new Date();
         Date expirationDate = new Date(now.getTime() + validity.toMillis());
 
+        // jjwt 0.12.x: Jwts.claims() 빌더 방식 → subject(), claim() 체이닝 방식으로 변경
         return BEARER_PREFIX + Jwts.builder()
-            .setClaims(claims)
-            .setIssuedAt(now)
-            .setExpiration(expirationDate)
-            .signWith(key, signatureAlgorithm)
+            .subject(id.toString())
+            .claim("username", username)
+            .claim("roles", roles.toString())
+            .issuedAt(now)
+            .expiration(expirationDate)
+            .signWith(key)
             .compact();
     }
 
@@ -77,10 +75,11 @@ public class JwtTokenProvider {
      */
     public boolean validateToken(String token) {
         try {
-            Jwts.parserBuilder()
-                .setSigningKey(key)
+            // jjwt 0.12.x: parserBuilder() → parser(), setSigningKey() → verifyWith(), parseClaimsJws() → parseSignedClaims()
+            Jwts.parser()
+                .verifyWith(key)
                 .build()
-                .parseClaimsJws(token);
+                .parseSignedClaims(token);
 
             return true;
         } catch (JwtException | IllegalArgumentException e) {
@@ -93,11 +92,11 @@ public class JwtTokenProvider {
      */
     public Claims parseClaims(String token) {
 
-        return Jwts.parserBuilder()
-            .setSigningKey(key)
+        return Jwts.parser()
+            .verifyWith(key)
             .build()
-            .parseClaimsJws(token)
-            .getBody();
+            .parseSignedClaims(token)
+            .getPayload();
     }
 
     public UUID getUserId(String token) {
