@@ -144,7 +144,7 @@ jobs:
           tags: |
             sagwim-backend:${{ steps.tag.outputs.tag }}
             sagwim-backend:latest
-          outputs: type=docker,dest=/tmp/sagwim-backend.tar
+          outputs: type=docker,dest=${{ github.workspace }}/sagwim-backend.tar
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -156,7 +156,7 @@ jobs:
           tags: |
             sagwim-frontend:${{ steps.tag.outputs.tag }}
             sagwim-frontend:latest
-          outputs: type=docker,dest=/tmp/sagwim-frontend.tar
+          outputs: type=docker,dest=${{ github.workspace }}/sagwim-frontend.tar
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -167,9 +167,9 @@ jobs:
           username: ${{ secrets.HOME_SERVER_USER }}
           key: ${{ secrets.HOME_SERVER_SSH_KEY }}
           port: ${{ secrets.HOME_SERVER_PORT || '22' }}
-          source: "/tmp/sagwim-backend.tar,/tmp/sagwim-frontend.tar"
-          target: "~/sagwim/images"
-          strip_components: 2
+          source: "sagwim-backend.tar,sagwim-frontend.tar"
+          target: "~/sagwim/images/"
+          strip_components: 0
 
       - name: 배포 스크립트 전송
         uses: appleboy/scp-action@v0.1.7
