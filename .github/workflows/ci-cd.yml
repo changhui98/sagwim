@@ -8,10 +8,6 @@ on:
     branches:
       - main
 
-env:
-  # 배포 태그: 날짜-커밋해시 (예: 20260430-abc1234)
-  IMAGE_TAG: ${{ github.run_number }}-${{ github.sha && github.sha[:7] || 'latest' }}
-
 jobs:
   # ===================================================
   # 백엔드 CI
