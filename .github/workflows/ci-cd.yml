@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - develop
   pull_request:
     branches:
       - main
@@ -126,7 +125,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: [backend-ci, frontend-ci]
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    environment: production
 
     steps:
       - name: 소스 체크아웃
@@ -172,7 +170,7 @@ jobs:
           host: ${{ secrets.HOME_SERVER_HOST }}
           username: ${{ secrets.HOME_SERVER_USER }}
           key: ${{ secrets.HOME_SERVER_SSH_KEY }}
-          port: ${{ secrets.HOME_SERVER_PORT || 22 }}
+          port: ${{ secrets.HOME_SERVER_PORT || '22' }}
           source: "/tmp/sagwim-backend.tar,/tmp/sagwim-frontend.tar"
           target: "~/sagwim/images"
           strip_components: 2
@@ -183,7 +181,7 @@ jobs:
           host: ${{ secrets.HOME_SERVER_HOST }}
           username: ${{ secrets.HOME_SERVER_USER }}
           key: ${{ secrets.HOME_SERVER_SSH_KEY }}
-          port: ${{ secrets.HOME_SERVER_PORT || 22 }}
+          port: ${{ secrets.HOME_SERVER_PORT || '22' }}
           source: "scripts/"
           target: "~/sagwim/"
 
@@ -193,7 +191,7 @@ jobs:
           host: ${{ secrets.HOME_SERVER_HOST }}
           username: ${{ secrets.HOME_SERVER_USER }}
           key: ${{ secrets.HOME_SERVER_SSH_KEY }}
-          port: ${{ secrets.HOME_SERVER_PORT || 22 }}
+          port: ${{ secrets.HOME_SERVER_PORT || '22' }}
           script: |
             set -e
             TAG="${{ steps.tag.outputs.tag }}"
