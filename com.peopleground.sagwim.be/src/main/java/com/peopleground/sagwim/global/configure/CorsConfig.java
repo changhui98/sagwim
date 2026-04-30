@@ -25,7 +25,12 @@ public class CorsConfig {
             .toList();
         config.setAllowedOriginPatterns(origins);
 
-        config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE"));
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+
+        // preflight 요청에서 허용할 요청 헤더를 명시한다.
+        // Authorization은 로그인 응답에서 토큰을 전달받는 헤더이고,
+        // Content-Type은 JSON 본문 전송 시 필수이다.
+        config.setAllowedHeaders(List.of("Authorization", "Content-Type", "X-Requested-With"));
 
         config.setAllowCredentials(true);
 

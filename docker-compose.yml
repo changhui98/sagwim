@@ -77,6 +77,8 @@ services:
       KAKAO_CLIENT_SECRET: ${KAKAO_CLIENT_SECRET:-}
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
       GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:-}
+      # CORS 허용 출처 — 운영 도메인을 반드시 포함해야 브라우저 preflight가 통과됨
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://sagwim.duckdns.org}
     volumes:
       - uploads_data:/app/uploads
     depends_on:
