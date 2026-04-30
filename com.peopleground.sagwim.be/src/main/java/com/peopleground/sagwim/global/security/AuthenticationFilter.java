@@ -1,8 +1,6 @@
 package com.peopleground.sagwim.global.security;
 
 import com.peopleground.sagwim.global.configure.CustomUser;
-import com.peopleground.sagwim.global.exception.ApiErrorCode;
-import com.peopleground.sagwim.global.exception.AppException;
 import com.peopleground.sagwim.global.exception.ErrorResponse;
 import com.peopleground.sagwim.global.security.jwt.JwtTokenProvider;
 import com.peopleground.sagwim.user.domain.UserErrorCode;
@@ -13,6 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.UUID;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -49,7 +48,9 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
             return this.getAuthenticationManager().authenticate(authRequest);
         } catch (IOException e) {
-            throw new AppException(UserErrorCode.MEMBER_UNAUTHORIZED);
+            // IOException은 AuthenticationException이 아니므로 BadCredentialsException으로 감싸야
+            // unsuccessfulAuthentication()이 정상 호출된다.
+            throw new BadCredentialsException("요청 본문을 파싱할 수 없습니다.", e);
         }
     }
 
