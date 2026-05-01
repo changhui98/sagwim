@@ -29,4 +29,18 @@ public record ImageResponse(
             image.getCreatedDate()
         );
     }
+
+    public static ImageResponse from(Image image, String resolvedUrl) {
+        return new ImageResponse(
+            image.getId(),
+            image.getTargetType(),
+            image.getTargetId(),
+            image.getOriginalFilename(),
+            resolvedUrl,
+            image.getFileSize(),
+            image.getContentType(),
+            image.getSortOrder(),
+            image.getCreatedDate()
+        );
+    }
 }

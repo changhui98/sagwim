@@ -10,13 +10,12 @@ import com.peopleground.sagwim.image.presentation.dto.response.ImageResponse;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
-@RequiredArgsConstructor
 public class ImageService {
 
     private static final long MAX_FILE_SIZE = 5 * 1024 * 1024L; // 5MB
@@ -30,6 +29,18 @@ public class ImageService {
 
     private final ImageRepository imageRepository;
     private final ImageStorage imageStorage;
+    private final String urlPrefix;
+
+    public ImageService(
+        ImageRepository imageRepository,
+        ImageStorage imageStorage,
+        @Value("${app.image.url-prefix:/images}") String urlPrefix
+    ) {
+        this.imageRepository = imageRepository;
+        this.imageStorage = imageStorage;
+        // 트레일링 슬래시 제거 — 조합 시 "/" + filename 형태로 일관되게 처리
+        this.urlPrefix = urlPrefix.endsWith("/") ? urlPrefix.substring(0, urlPrefix.length() - 1) : urlPrefix;
+    }
 
     @Transactional
     public ImageResponse uploadImage(
@@ -46,7 +57,8 @@ public class ImageService {
         String extension = extractExtension(originalFilename);
         String storedFilename = UUID.randomUUID() + (extension.isEmpty() ? "" : "." + extension);
 
-        String fileUrl = imageStorage.store(file, storedFilename);
+        // store()는 파일명만 반환 — DB에는 파일명만 저장
+        imageStorage.store(file, storedFilename);
 
         int sortOrder = imageRepository.countByTargetTypeAndTargetId(targetType, targetId);
 
@@ -55,22 +67,35 @@ public class ImageService {
             targetId,
             originalFilename,
             storedFilename,
-            fileUrl,
+            storedFilename,
             file.getSize(),
             file.getContentType(),
             sortOrder
         );
 
         Image saved = imageRepository.save(image);
-        return ImageResponse.from(saved);
+        return ImageResponse.from(saved, resolveUrl(saved.getFileUrl()));
     }
 
     @Transactional(readOnly = true)
     public List<ImageResponse> getImages(ImageTargetType targetType, String targetId) {
         return imageRepository.findByTarget(targetType, targetId)
             .stream()
-            .map(ImageResponse::from)
+            .map(image -> ImageResponse.from(image, resolveUrl(image.getFileUrl())))
             .toList();
+    }
+
+    /**
+     * DB에 저장된 값을 클라이언트에 전달할 URL로 변환한다.
+     *
+     * <p>하위 호환: 기존 데이터가 절대 URL(http/https로 시작)이면 그대로 반환하고,
+     * 파일명만 있는 경우 urlPrefix와 조합하여 반환한다.
+     */
+    private String resolveUrl(String fileUrlOrFilename) {
+        if (fileUrlOrFilename == null || fileUrlOrFilename.startsWith("http://") || fileUrlOrFilename.startsWith("https://")) {
+            return fileUrlOrFilename;
+        }
+        return urlPrefix + "/" + fileUrlOrFilename;
     }
 
     @Transactional
