@@ -17,14 +17,11 @@ import org.springframework.web.multipart.MultipartFile;
 public class LocalImageStorage implements ImageStorage {
 
     private final String uploadDir;
-    private final String urlPrefix;
 
     public LocalImageStorage(
-        @Value("${app.image.upload-dir}") String uploadDir,
-        @Value("${app.image.url-prefix}") String urlPrefix
+        @Value("${app.image.upload-dir}") String uploadDir
     ) {
         this.uploadDir = uploadDir.endsWith("/") ? uploadDir : uploadDir + "/";
-        this.urlPrefix = urlPrefix.endsWith("/") ? urlPrefix : urlPrefix + "/";
     }
 
     @Override
@@ -42,7 +39,8 @@ public class LocalImageStorage implements ImageStorage {
 
             file.transferTo(target.toFile());
 
-            return urlPrefix + storedFilename;
+            // DB에는 파일명만 저장 — URL 조합은 서비스 레이어에서 담당
+            return storedFilename;
         } catch (IOException e) {
             log.error("이미지 저장 실패: storedFilename={}", storedFilename, e);
             throw new AppException(ImageErrorCode.IMAGE_UPLOAD_FAILED);
