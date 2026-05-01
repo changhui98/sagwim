@@ -127,7 +127,7 @@ export function GroupEditForm({ group, actionLoading, onSubmit, onCancel }: Grou
           type="number"
           className={styles.editInput}
           min={group.currentMemberCount}
-          max={100}
+          max={1000}
           value={editMaxMemberCount}
           onChange={(e) => setEditMaxMemberCount(Number(e.target.value))}
         />
