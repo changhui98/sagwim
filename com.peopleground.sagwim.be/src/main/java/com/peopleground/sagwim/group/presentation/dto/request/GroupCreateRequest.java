@@ -28,7 +28,7 @@ public record GroupCreateRequest(
 
     @NotNull(message = "최대 인원은 필수입니다.")
     @Min(value = 2, message = "최대 인원은 2명 이상이어야 합니다.")
-    @Max(value = 100, message = "최대 인원은 100명을 초과할 수 없습니다.")
+    @Max(value = 1000, message = "최대 인원은 1000명을 초과할 수 없습니다.")
     Integer maxMemberCount
 ) {
 }

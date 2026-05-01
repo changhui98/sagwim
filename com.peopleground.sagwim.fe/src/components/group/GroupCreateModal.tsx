@@ -62,7 +62,7 @@ export function GroupCreateModal({ isOpen, onClose, onCreated }: GroupCreateModa
     if (description.length > 1000) next.description = '설명은 1000자를 초과할 수 없습니다.'
     if (meetingType === 'OFFLINE' && !region) next.region = '오프라인 모임은 지역 선택이 필요합니다.'
     if (maxMemberCount < 2) next.maxMemberCount = '최대 인원은 2명 이상이어야 합니다.'
-    if (maxMemberCount > 100) next.maxMemberCount = '최대 인원은 100명을 초과할 수 없습니다.'
+    if (maxMemberCount > 1000) next.maxMemberCount = '최대 인원은 1000명을 초과할 수 없습니다.'
     return next
   }
 
@@ -265,7 +265,7 @@ export function GroupCreateModal({ isOpen, onClose, onCreated }: GroupCreateModa
                   setErrors((prev) => ({ ...prev, maxMemberCount: '' }))
               }}
               min={2}
-              max={100}
+              max={1000}
               disabled={submitting}
             />
             {errors.maxMemberCount && (
