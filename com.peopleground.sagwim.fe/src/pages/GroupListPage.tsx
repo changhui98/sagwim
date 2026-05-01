@@ -7,6 +7,7 @@ import { Navbar } from '../components/Navbar'
 import type { GroupResponse } from '../types/group'
 import treeIcon from '../assets/tree-svgrepo-com.svg'
 import starPrizeIcon from '../assets/star-prize-award-svgrepo-com.svg'
+import pinPointIcon from '../assets/pin-point-svgrepo-com.svg'
 import { GroupSection } from '../components/group/GroupSection'
 import styles from './GroupListPage.module.css'
 
@@ -147,6 +148,21 @@ export function GroupListPage() {
         emptyIcon={<img src={starPrizeIcon} alt="" width={56} height={56} />}
         emptyTitle="아직 인기 모임이 없습니다."
         emptyDescription="좋아요를 많이 받은 모임이 여기에 표시됩니다."
+      />
+      <hr className={styles.divider} />
+      <GroupSection
+        title="📍 걸어서 닿는 모임"
+        subtitle="가까운 동네에서 시작되는 사귐"
+        groups={[]}
+        loading={false}
+        error=""
+        onRetry={undefined}
+        likedMap={likedMap}
+        likeCountMap={likeCountMap}
+        onLikeToggle={handleLikeToggle}
+        emptyIcon={<img src={pinPointIcon} alt="" width={56} height={56} />}
+        emptyTitle="아직 근처 모임이 없습니다."
+        emptyDescription="위치 기반 모임 기능이 곧 열립니다."
       />
     </>
   )
