@@ -225,6 +225,33 @@ build_images() {
 }
 
 # =====================================================
+# p_group.image_url 데이터 정규화
+#
+# 배경: 이전 두 번의 코드 수정(Fix 커밋)으로 인해 DB에 저장된 image_url이
+#   세 가지 형태로 혼재할 수 있다:
+#   (a) "abc-123.jpg"          → /images/ 접두사 누락 → 브라우저 404
+#   (b) "/images/abc-123.jpg"  → 정상 (현재 코드 기준)
+#   (c) "http://..."           → 외부 URL (소셜 이미지 등, 그대로 유지)
+#
+# 이 함수는 (a) 형태를 (b)로 변환한다. 멱등(idempotent)하므로 반복 실행해도 안전.
+# =====================================================
+fix_group_image_urls() {
+    log_info "p_group.image_url 데이터 정규화 중..."
+
+    local sql="UPDATE p_group \
+        SET image_url = '/images/' || image_url \
+        WHERE image_url IS NOT NULL \
+          AND image_url NOT LIKE 'http://%' \
+          AND image_url NOT LIKE 'https://%' \
+          AND image_url NOT LIKE '/%';"
+
+    docker exec sagwim-postgres \
+        psql -U "${POSTGRES_USER}" -d "${POSTGRES_DB}" -c "$sql" 2>/dev/null \
+        && log_ok "image_url 정규화 완료" \
+        || log_warn "image_url 정규화 실패 (DB가 아직 준비되지 않았을 수 있습니다)"
+}
+
+# =====================================================
 # 인프라(DB, Redis) 기동 확인
 # =====================================================
 ensure_infra() {
@@ -268,6 +295,8 @@ main() {
     # 배포 실행
     if [[ "$TARGET" == "be" || "$TARGET" == "all" ]]; then
         deploy_backend "$TAG"
+        # 백엔드 배포 후 DB의 image_url 컬럼 데이터 정규화
+        fix_group_image_urls
     fi
 
     if [[ "$TARGET" == "fe" || "$TARGET" == "all" ]]; then
