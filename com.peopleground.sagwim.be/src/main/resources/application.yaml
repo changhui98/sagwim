@@ -80,7 +80,7 @@ google:
 app:
   image:
     upload-dir: ${IMAGE_UPLOAD_DIR:./uploads/images}
-    url-prefix: ${IMAGE_URL_PREFIX:http://localhost:8080/images}
+    url-prefix: ${IMAGE_URL_PREFIX:/images}
   cors:
     allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:5173}
 
