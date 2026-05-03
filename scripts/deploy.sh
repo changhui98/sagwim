@@ -168,7 +168,7 @@ deploy_backend() {
         -e REDIS_HOST=sagwim-redis \
         -e IMAGE_UPLOAD_DIR=/app/uploads/images \
         -e IMAGE_URL_PREFIX="${IMAGE_URL_PREFIX:-/images}" \
-        -e CORS_ALLOWED_ORIGINS="${CORS_ALLOWED_ORIGINS:-http://sagwim.duckdns.org}" \
+        -e CORS_ALLOWED_ORIGINS="${CORS_ALLOWED_ORIGINS:-https://sagwim.com}" \
         -v sagwim_uploads_data:/app/uploads \
         --health-cmd="wget -qO- http://localhost:8080/actuator/health || exit 1" \
         --health-interval=30s \
