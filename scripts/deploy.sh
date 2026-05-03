@@ -148,6 +148,12 @@ deploy_backend() {
         exit 1
     fi
 
+    # 이전 배포 실패로 남은 Green 컨테이너 정리
+    if docker ps -aq -f name="^${green}$" | grep -q .; then
+        log_warn "이전 Green 컨테이너가 남아있어 제거합니다..."
+        docker rm -f "$green"
+    fi
+
     # Green 컨테이너 시작
     # docker-compose.yml의 environment 기본값은 docker run에 적용되지 않으므로
     # CORS_ALLOWED_ORIGINS, IMAGE_URL_PREFIX 등을 명시적으로 주입한다.
