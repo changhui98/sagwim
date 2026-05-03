@@ -2,6 +2,7 @@ package com.peopleground.sagwim.user.application;
 
 import com.peopleground.sagwim.global.dto.PageResponse;
 import com.peopleground.sagwim.global.exception.AppException;
+import com.peopleground.sagwim.image.application.ImageUrlResolver;
 import com.peopleground.sagwim.user.domain.UserErrorCode;
 import com.peopleground.sagwim.user.domain.entity.User;
 import com.peopleground.sagwim.user.domain.repository.UserRepository;
@@ -18,13 +19,15 @@ import org.springframework.transaction.annotation.Transactional;
 public class AdminService {
 
     private final UserRepository userRepository;
+    private final ImageUrlResolver imageUrlResolver;
 
     @Transactional(readOnly = true)
     public PageResponse<AdminUserResponse> getUsersForAdmin(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
 
         return PageResponse.from(
-            userRepository.findAllUserForAdmin(pageable).map(AdminUserResponse::from)
+            userRepository.findAllUserForAdmin(pageable)
+                .map(user -> AdminUserResponse.from(user, imageUrlResolver.resolve(user.getProfileImageUrl())))
         );
     }
 

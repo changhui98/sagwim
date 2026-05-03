@@ -142,3 +142,15 @@ export const getMonthlyContentCreations = (
     },
   ).then((response) => parseResponse<MonthlyStatsResponse>(response))
 }
+
+export const getMonthlyGroupCreations = (
+  token: string,
+  months = 12,
+): Promise<MonthlyStatsResponse> => {
+  return fetch(
+    `${API_BASE_URL}/admin/stats/groups/monthly-creations?months=${months}`,
+    {
+      headers: createAuthHeaders(token),
+    },
+  ).then((response) => parseResponse<MonthlyStatsResponse>(response))
+}

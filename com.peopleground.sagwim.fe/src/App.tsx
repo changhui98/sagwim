@@ -12,6 +12,7 @@ import { UserGridPage } from './pages/UserGridPage'
 import { ProfilePage } from './pages/ProfilePage'
 import { AdminDashboardPage } from './pages/admin/AdminDashboardPage'
 import { AdminUserListPage } from './pages/admin/AdminUserListPage'
+import { AdminGroupsPage } from './pages/admin/AdminGroupsPage'
 import { AdminPostListPage } from './pages/admin/AdminPostListPage'
 import { PostCreatePage } from './pages/PostCreatePage'
 import { GroupListPage } from './pages/GroupListPage'
@@ -33,7 +34,8 @@ function App() {
       />
       <Route path="/sign-up" element={<SignUpPage />} />
       <Route element={<ProtectedRoute />}>
-        <Route path="/app" element={<PostListPage />} />
+        <Route path="/app" element={<GroupListPage />} />
+        <Route path="/app/posts" element={<PostListPage />} />
         <Route path="/app/posts/new" element={<PostCreatePage />} />
         <Route element={<AdminRoute />}>
           <Route path="/app/users" element={<UserGridPage />} />
@@ -48,6 +50,7 @@ function App() {
         <Route path="/app/admin" element={<AdminLayout />}>
           <Route index element={<AdminDashboardPage />} />
           <Route path="users" element={<AdminUserListPage />} />
+          <Route path="groups" element={<AdminGroupsPage />} />
           <Route path="posts" element={<AdminPostListPage />} />
         </Route>
       </Route>

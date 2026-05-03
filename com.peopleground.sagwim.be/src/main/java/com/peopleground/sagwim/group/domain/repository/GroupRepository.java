@@ -2,6 +2,8 @@ package com.peopleground.sagwim.group.domain.repository;
 
 import com.peopleground.sagwim.group.domain.entity.Group;
 import com.peopleground.sagwim.group.domain.entity.GroupCategory;
+import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,4 +31,6 @@ public interface GroupRepository {
     void decrementLikeCount(Long groupId);
 
     Integer findLikeCountById(Long groupId);
+
+    Map<String, Long> countMonthlyCreations(LocalDateTime windowStart);
 }

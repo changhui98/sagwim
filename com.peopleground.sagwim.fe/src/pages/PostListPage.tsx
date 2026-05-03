@@ -1,10 +1,7 @@
 import { useCallback, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
-import {
-  usePostCreateModal,
-  usePostCreatedSubscription,
-} from '../context/PostCreateModalContext'
+import { usePostCreatedSubscription } from '../context/PostCreateModalContext'
 import { useInfinitePostList } from '../hooks/useInfinitePostList'
 import { useIntersectionObserver } from '../hooks/useIntersectionObserver'
 import { Navbar } from '../components/Navbar'
@@ -13,6 +10,7 @@ import { InfiniteScrollLoader } from '../components/post/InfiniteScrollLoader'
 import { EndOfList } from '../components/post/EndOfList'
 import { Skeleton } from '../components/common/Skeleton'
 import { EmptyState } from '../components/common/EmptyState'
+import xmarkIcon from '../assets/xmark-svgrepo-com.svg'
 import styles from './PostListPage.module.css'
 
 const SKELETON_COUNT = 8
@@ -39,8 +37,6 @@ export function PostListPage() {
       resetAndRefresh()
     }, [resetAndRefresh]),
   )
-
-  const { open: openPostCreateModal } = usePostCreateModal()
 
   const { ref: sentinelRef, isIntersecting } = useIntersectionObserver({
     rootMargin: '0px 0px 200px 0px',
@@ -85,14 +81,10 @@ export function PostListPage() {
 
     if (posts.length === 0) {
       return (
-        <div className="card">
+        <div className={styles.emptyStateCenter}>
           <EmptyState
-            title="게시글이 없습니다."
-            description="아직 작성된 게시글이 없습니다. 첫 번째 게시글을 작성해 보세요!"
-            action={{
-              label: '게시글 작성',
-              onClick: openPostCreateModal,
-            }}
+            title="아직 작성된 게시글이 없습니다."
+            icon={<img src={xmarkIcon} alt="" aria-hidden="true" style={{ width: 68, height: 68 }} />}
           />
         </div>
       )

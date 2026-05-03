@@ -13,6 +13,11 @@ export default defineConfig({
         target: process.env.VITE_PROXY_TARGET ?? 'http://localhost:8080',
         changeOrigin: true,
       },
+      '/images': {
+        // 정적 이미지 파일을 Spring Boot ResourceHandler(/images/**)로 프록시
+        target: process.env.VITE_PROXY_TARGET ?? 'http://localhost:8080',
+        changeOrigin: true,
+      },
     },
   },
 })

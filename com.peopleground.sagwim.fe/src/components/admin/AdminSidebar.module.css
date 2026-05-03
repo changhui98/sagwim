@@ -106,11 +106,10 @@
 }
 
 .menuIcon {
-  font-size: 1.125rem;
-  line-height: 1;
   width: 24px;
-  text-align: center;
+  height: 24px;
   flex-shrink: 0;
+  object-fit: contain;
 }
 
 .menuLabel {
@@ -148,6 +147,7 @@
   }
 
   .menuIcon {
-    font-size: 1.25rem;
+    width: 28px;
+    height: 28px;
   }
 }

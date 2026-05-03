@@ -28,6 +28,10 @@ public class FlywayConfig {
     @Value("${spring.flyway.validate-on-migrate:true}")
     private boolean validateOnMigrate;
 
+    // "latest" → Flyway 기본값(모든 버전 적용), 숫자 지정 시 해당 버전까지만 적용
+    @Value("${spring.flyway.target:latest}")
+    private String target;
+
     @Bean(initMethod = "migrate")
     public Flyway flyway(DataSource dataSource) {
         return Flyway.configure()
@@ -36,6 +40,7 @@ public class FlywayConfig {
                 .baselineOnMigrate(baselineOnMigrate)
                 .baselineVersion(baselineVersion)
                 .validateOnMigrate(validateOnMigrate)
+                .target(org.flywaydb.core.api.MigrationVersion.fromVersion(target))
                 .load();
     }
 }
