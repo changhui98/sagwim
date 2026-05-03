@@ -3,6 +3,7 @@ package com.peopleground.sagwim.user.application;
 import com.peopleground.sagwim.global.configure.CustomUser;
 import com.peopleground.sagwim.global.dto.PageResponse;
 import com.peopleground.sagwim.global.exception.AppException;
+import com.peopleground.sagwim.image.application.ImageUrlResolver;
 import com.peopleground.sagwim.user.domain.UserErrorCode;
 import com.peopleground.sagwim.user.domain.entity.User;
 import com.peopleground.sagwim.user.domain.repository.UserRepository;
@@ -31,18 +32,18 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final GeocodingClient geocodingClient;
     private final GeometryFactory geometryFactory;
+    private final ImageUrlResolver imageUrlResolver;
 
     @Transactional(readOnly = true)
     public UserDetailResponse getMyProfile(CustomUser customUser) {
         User user = getUser(customUser);
-
-        return UserDetailResponse.from(user);
+        return UserDetailResponse.from(user, imageUrlResolver.resolve(user.getProfileImageUrl()));
     }
 
     @Transactional(readOnly = true)
     public UserDetailResponse getProfileByUsername(String username) {
         User user = getActiveUserByUsername(username);
-        return UserDetailResponse.from(user);
+        return UserDetailResponse.from(user, imageUrlResolver.resolve(user.getProfileImageUrl()));
     }
 
     @Transactional(readOnly = true)
@@ -112,7 +113,7 @@ public class UserService {
 
         User saveUser = userRepository.updateProfile(updateUser);
 
-        return UserDetailResponse.from(saveUser);
+        return UserDetailResponse.from(saveUser, imageUrlResolver.resolve(saveUser.getProfileImageUrl()));
     }
 
     @Transactional

@@ -2,6 +2,7 @@
 spring:
   config:
     # 로컬 직접 실행 시 .env 파일에서 환경변수 로드 (Docker 실행 시에는 컨테이너 환경변수 사용)
+    # be/ 하위에 .env만 참조 — 루트 .env는 build.gradle(bootRun)에서 주입하므로 여기서 중복 로드하지 않음
     import: optional:file:.env[.properties]
   flyway:
     locations: classpath:db/migration,classpath:db/migration/dev

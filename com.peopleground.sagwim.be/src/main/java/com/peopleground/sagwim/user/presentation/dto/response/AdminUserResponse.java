@@ -19,13 +19,17 @@ public record AdminUserResponse(
 ) implements UserResponseMarker{
 
     public static AdminUserResponse from(User user) {
+        return from(user, user.getProfileImageUrl());
+    }
+
+    public static AdminUserResponse from(User user, String resolvedProfileImageUrl) {
         return new AdminUserResponse(
             user.getId(),
             user.getUsername(),
             user.getNickname(),
             user.getUserEmail(),
             user.getAddress(),
-            user.getProfileImageUrl(),
+            resolvedProfileImageUrl,
             user.getProvider(),
             user.isDeleted(),
             user.getCreatedDate(),

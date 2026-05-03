@@ -11,6 +11,7 @@ import com.peopleground.sagwim.global.exception.AppException;
 import com.peopleground.sagwim.group.domain.GroupErrorCode;
 import com.peopleground.sagwim.group.domain.entity.Group;
 import com.peopleground.sagwim.group.domain.repository.GroupRepository;
+import com.peopleground.sagwim.image.application.ImageUrlResolver;
 import com.peopleground.sagwim.like.domain.entity.ContentLike;
 import com.peopleground.sagwim.like.domain.entity.GroupLike;
 import com.peopleground.sagwim.like.domain.repository.CommentLikeRepository;
@@ -40,6 +41,7 @@ public class LikeService {
     private final CommentRepository commentRepository;
     private final GroupRepository groupRepository;
     private final UserRepository userRepository;
+    private final ImageUrlResolver imageUrlResolver;
 
     /**
      * 게시글 좋아요 토글.
@@ -173,7 +175,10 @@ public class LikeService {
             .orElseThrow(() -> new AppException(GroupErrorCode.GROUP_NOT_FOUND));
         return groupLikeRepository.findByGroupId(groupId)
             .stream()
-            .map(gl -> GroupLikerResponse.from(gl.getUser()))
+            .map(gl -> GroupLikerResponse.from(
+                gl.getUser(),
+                imageUrlResolver.resolve(gl.getUser().getProfileImageUrl())
+            ))
             .toList();
     }
 
