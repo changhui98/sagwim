@@ -32,6 +32,15 @@
   padding: var(--sp-5);
 }
 
+/* ── Empty State ── */
+.emptyStateCenter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: min(60vh, 520px);
+}
+
 /* ── Sentinel (IntersectionObserver 감지용) ── */
 .sentinel {
   height: 1px;
