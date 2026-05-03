@@ -88,11 +88,20 @@ public class ImageService {
     /**
      * DB에 저장된 값을 클라이언트에 전달할 URL로 변환한다.
      *
-     * <p>하위 호환: 기존 데이터가 절대 URL(http/https로 시작)이면 그대로 반환하고,
-     * 파일명만 있는 경우 urlPrefix와 조합하여 반환한다.
+     * <p>하위 호환: 다음 세 가지 형태를 모두 처리한다.
+     * <ul>
+     *   <li>{@code null} — null 반환</li>
+     *   <li>{@code "http://..."} / {@code "https://..."} — 외부 URL, 그대로 반환</li>
+     *   <li>{@code "/images/..."} — 이미 prefix가 포함된 경로, 그대로 반환</li>
+     *   <li>{@code "파일명.jpg"} — 파일명만 있는 경우, urlPrefix + "/" + 파일명 으로 조합</li>
+     * </ul>
+     * {@link com.peopleground.sagwim.image.application.ImageUrlResolver}와 동일한 로직을 유지한다.
      */
     private String resolveUrl(String fileUrlOrFilename) {
-        if (fileUrlOrFilename == null || fileUrlOrFilename.startsWith("http://") || fileUrlOrFilename.startsWith("https://")) {
+        if (fileUrlOrFilename == null
+            || fileUrlOrFilename.startsWith("http://")
+            || fileUrlOrFilename.startsWith("https://")
+            || fileUrlOrFilename.startsWith("/")) {
             return fileUrlOrFilename;
         }
         return urlPrefix + "/" + fileUrlOrFilename;

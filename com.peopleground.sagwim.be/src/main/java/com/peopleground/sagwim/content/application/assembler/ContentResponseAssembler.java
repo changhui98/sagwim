@@ -3,6 +3,7 @@ package com.peopleground.sagwim.content.application.assembler;
 import com.peopleground.sagwim.content.domain.entity.Content;
 import com.peopleground.sagwim.content.presentation.dto.response.ContentResponse;
 import com.peopleground.sagwim.global.configure.CustomUser;
+import com.peopleground.sagwim.image.application.ImageUrlResolver;
 import com.peopleground.sagwim.image.domain.entity.ImageTargetType;
 import com.peopleground.sagwim.image.domain.repository.ImageRepository;
 import com.peopleground.sagwim.like.domain.repository.ContentLikeRepository;
@@ -38,6 +39,7 @@ public class ContentResponseAssembler {
     private final UserRepository userRepository;
     private final ContentTagRepository contentTagRepository;
     private final ImageRepository imageRepository;
+    private final ImageUrlResolver imageUrlResolver;
 
     /**
      * {@link Page}&lt;{@link Content}&gt; 를 {@link ContentResponse} 페이지로 변환한다.
@@ -94,7 +96,14 @@ public class ContentResponseAssembler {
         List<String> targetIds = contents.stream()
             .map(c -> String.valueOf(c.getId()))
             .toList();
-        return imageRepository.findUrlsByTargetIds(ImageTargetType.CONTENT, targetIds);
+        Map<String, List<String>> rawUrls = imageRepository.findUrlsByTargetIds(ImageTargetType.CONTENT, targetIds);
+
+        // DB에 저장된 파일명을 클라이언트가 접근 가능한 URL로 변환한다.
+        Map<String, List<String>> resolved = new LinkedHashMap<>();
+        rawUrls.forEach((targetId, urls) ->
+            resolved.put(targetId, urls.stream().map(imageUrlResolver::resolve).toList())
+        );
+        return resolved;
     }
 
     private Map<Long, List<String>> resolveTagsByContentId(List<Content> contents) {
