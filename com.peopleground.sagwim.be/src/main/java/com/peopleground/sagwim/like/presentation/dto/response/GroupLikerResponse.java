@@ -9,10 +9,14 @@ public record GroupLikerResponse(
 ) {
 
     public static GroupLikerResponse from(User user) {
+        return from(user, user.getProfileImageUrl());
+    }
+
+    public static GroupLikerResponse from(User user, String resolvedProfileImageUrl) {
         return new GroupLikerResponse(
             user.getUsername(),
             user.getNickname(),
-            user.getProfileImageUrl()
+            resolvedProfileImageUrl
         );
     }
 }

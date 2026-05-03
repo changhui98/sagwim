@@ -85,7 +85,8 @@ dependencies {
 }
 
 def loadEnv() {
-    def envFile = file('.env')
+    // be/ 디렉토리에 .env가 있으면 우선 사용, 없으면 상위 루트의 .env 참조
+    def envFile = file('.env').exists() ? file('.env') : file('../.env')
     def envVars = [:]
     if (envFile.exists()) {
         envFile.eachLine { line ->

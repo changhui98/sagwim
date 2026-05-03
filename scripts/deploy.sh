@@ -97,7 +97,7 @@ deploy_backend() {
 
     # Green 컨테이너 시작
     # docker-compose.yml의 environment 기본값은 docker run에 적용되지 않으므로
-    # 운영 도메인용 CORS_ALLOWED_ORIGINS를 명시적으로 주입한다.
+    # CORS_ALLOWED_ORIGINS, IMAGE_URL_PREFIX 등을 명시적으로 주입한다.
     log_info "Green 컨테이너 기동 중..."
     docker run -d \
         --name "$green" \
@@ -108,6 +108,7 @@ deploy_backend() {
         -e POSTGRES_HOST=sagwim-postgres \
         -e REDIS_HOST=sagwim-redis \
         -e IMAGE_UPLOAD_DIR=/app/uploads/images \
+        -e IMAGE_URL_PREFIX="${IMAGE_URL_PREFIX:-/images}" \
         -e CORS_ALLOWED_ORIGINS="${CORS_ALLOWED_ORIGINS:-http://sagwim.duckdns.org}" \
         -v sagwim_uploads_data:/app/uploads \
         --health-cmd="wget -qO- http://localhost:8080/actuator/health || exit 1" \
@@ -247,8 +248,30 @@ fix_group_image_urls() {
 
     docker exec sagwim-postgres \
         psql -U "${POSTGRES_USER}" -d "${POSTGRES_DB}" -c "$sql" 2>/dev/null \
-        && log_ok "image_url 정규화 완료" \
-        || log_warn "image_url 정규화 실패 (DB가 아직 준비되지 않았을 수 있습니다)"
+        && log_ok "p_group.image_url 정규화 완료" \
+        || log_warn "p_group.image_url 정규화 실패 (DB가 아직 준비되지 않았을 수 있습니다)"
+}
+
+# =====================================================
+# p_user.profile_image_url 데이터 정규화
+#
+# 파일명만 저장된 레코드(외부 URL·절대경로 아닌 것)에 /images/ prefix를 붙인다.
+# 멱등(idempotent)하므로 반복 실행해도 안전.
+# =====================================================
+fix_user_profile_image_urls() {
+    log_info "p_user.profile_image_url 데이터 정규화 중..."
+
+    local sql="UPDATE p_user \
+        SET profile_image_url = '/images/' || profile_image_url \
+        WHERE profile_image_url IS NOT NULL \
+          AND profile_image_url NOT LIKE 'http://%' \
+          AND profile_image_url NOT LIKE 'https://%' \
+          AND profile_image_url NOT LIKE '/%';"
+
+    docker exec sagwim-postgres \
+        psql -U "${POSTGRES_USER}" -d "${POSTGRES_DB}" -c "$sql" 2>/dev/null \
+        && log_ok "p_user.profile_image_url 정규화 완료" \
+        || log_warn "p_user.profile_image_url 정규화 실패 (DB가 아직 준비되지 않았을 수 있습니다)"
 }
 
 # =====================================================
@@ -297,6 +320,7 @@ main() {
         deploy_backend "$TAG"
         # 백엔드 배포 후 DB의 image_url 컬럼 데이터 정규화
         fix_group_image_urls
+        fix_user_profile_image_urls
     fi
 
     if [[ "$TARGET" == "fe" || "$TARGET" == "all" ]]; then

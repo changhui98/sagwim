@@ -20,6 +20,10 @@ public record UserDetailResponse(
 ) {
 
     public static UserDetailResponse from(User user) {
+        return from(user, user.getProfileImageUrl());
+    }
+
+    public static UserDetailResponse from(User user, String resolvedProfileImageUrl) {
         return new UserDetailResponse(
             user.getId(),
             user.getUsername(),
@@ -27,7 +31,7 @@ public record UserDetailResponse(
             user.getUserEmail(),
             user.getAddress(),
             user.getRole(),
-            user.getProfileImageUrl(),
+            resolvedProfileImageUrl,
             user.getProvider(),
             user.getCreatedDate(),
             user.getLastModifiedDate()
