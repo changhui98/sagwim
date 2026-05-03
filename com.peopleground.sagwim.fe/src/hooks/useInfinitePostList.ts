@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { getPosts } from '../api/postApi'
+import { getContentImages } from '../api/imageApi'
 import { ApiError } from '../api/ApiError'
 import { useAuth } from '../context/AuthContext'
 import type { ContentResponse } from '../types/post'
@@ -45,6 +46,38 @@ export function useInfinitePostList(): UseInfinitePostListResult {
     [logout, navigate],
   )
 
+  /**
+   * getPosts 응답의 imageUrls가 비어있는 게시글에 대해 개별 이미지 API로
+   * 폴백하여 imageUrls를 채운다.
+   *
+   * ContentResponseAssembler가 최신 배포되어 있으면 imageUrls가 이미
+   * 채워져 있으므로 대부분의 경우 추가 호출이 발생하지 않는다.
+   * 배포 타이밍 문제나 예외 상황에서도 이미지가 표시되도록 방어한다.
+   */
+  const fillMissingImageUrls = useCallback(
+    async (contents: ContentResponse[]): Promise<ContentResponse[]> => {
+      const missing = contents.filter((c) => !c.imageUrls || c.imageUrls.length === 0)
+      if (missing.length === 0) return contents
+
+      const resolved = await Promise.all(
+        missing.map(async (post) => {
+          try {
+            const images = await getContentImages(token, post.id)
+            return { id: post.id, imageUrls: images.map((img) => img.fileUrl) }
+          } catch {
+            return { id: post.id, imageUrls: [] }
+          }
+        }),
+      )
+
+      const urlMap = new Map(resolved.map((r) => [r.id, r.imageUrls]))
+      return contents.map((c) =>
+        urlMap.has(c.id) ? { ...c, imageUrls: urlMap.get(c.id) } : c,
+      )
+    },
+    [token],
+  )
+
   const fetchPage = useCallback(
     async (page: number, keyword: string, searchType: 'TITLE' | 'USERNAME', append: boolean) => {
       try {
@@ -57,8 +90,9 @@ export function useInfinitePostList(): UseInfinitePostListResult {
         setServiceUnavailable(false)
 
         const response = await getPosts(token, page, PAGE_SIZE, keyword, searchType)
+        const filledContent = await fillMissingImageUrls(response.content)
 
-        setPosts((prev) => (append ? [...prev, ...response.content] : response.content))
+        setPosts((prev) => (append ? [...prev, ...filledContent] : filledContent))
         setHasMore(response.hasNext)
         pageRef.current = page
       } catch (err) {
@@ -74,7 +108,7 @@ export function useInfinitePostList(): UseInfinitePostListResult {
         setIsFetchingMore(false)
       }
     },
-    [token, handleUnauthorized],
+    [token, handleUnauthorized, fillMissingImageUrls],
   )
 
   useEffect(() => {

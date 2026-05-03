@@ -37,8 +37,8 @@ public record UserCreateRequest(
 
     @NotBlank(message = "주소는 필수입니다.")
     @Pattern(
-        regexp = "^[가-힣a-zA-Z0-9\\s]+$",
-        message = "주소는 한글, 영어, 숫자만 사용할 수 있습니다."
+        regexp = "^[가-힣a-zA-Z0-9\\s\\-().]+$",
+        message = "주소는 한글, 영어, 숫자, 공백, 하이픈(-), 괄호, 점(.)만 사용할 수 있습니다."
     )
     String address
 

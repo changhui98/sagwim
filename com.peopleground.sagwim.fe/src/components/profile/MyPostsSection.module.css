@@ -59,21 +59,16 @@
 }
 
 .cardGrid {
+  /* 사이드바(72px) + 좌우 패딩(80px × 2) = 232px 를 제외한 실질 콘텐츠 너비 기준으로
+     브레이크포인트를 설계합니다. (모바일은 사이드바 0px, 좌우 패딩 32px × 2 = 64px)
+     각 열의 최소 너비는 minmax(0, 1fr) 로 컨테이너에 완전히 맞춥니다.            */
   --profile-thumb-gap: 2px;
-  --profile-thumb-w: 241.84px;
-  --profile-thumb-h: 322.45px;
   --profile-cols: 6;
   --profile-grid-corner-r: 10px;
   display: grid;
   grid-template-columns: repeat(var(--profile-cols), minmax(0, 1fr));
   gap: var(--profile-thumb-gap);
-  justify-content: center;
-  background: transparent;
   width: 100%;
-  max-width: calc(
-    (var(--profile-cols) * var(--profile-thumb-w)) +
-    ((var(--profile-cols) - 1) * var(--profile-thumb-gap))
-  );
   margin: 0 auto;
   min-width: 0;
   box-sizing: border-box;
@@ -84,18 +79,24 @@
   border-top-left-radius: var(--profile-grid-corner-r);
 }
 
+/* 기본(6열) 첫 줄 오른쪽 끝 */
 .cardGrid > :nth-child(6),
 .cardGrid > :last-child:nth-child(-n + 6) {
   border-top-right-radius: var(--profile-grid-corner-r);
 }
 
-@media (max-width: 2074px) and (min-width: 1730px) {
+/* 콘텐츠 너비 ≈ 뷰포트 - 사이드바(72px) - 패딩(80px × 2)
+   1400px 뷰포트 → 콘텐츠 ~1168px  →  5열
+   1100px 뷰포트 → 콘텐츠 ~868px   →  4열
+   800px 뷰포트  → 콘텐츠 ~568px   →  3열
+   640px 이하    → 모바일: 사이드바 없음, 패딩 32px × 2 → 3열 유지
+   480px 이하    → 2열                                                 */
+@media (max-width: 1399px) and (min-width: 1100px) {
   .cardGrid {
     --profile-cols: 5;
-    --profile-thumb-w: 290.4px;
-    --profile-thumb-h: 387.2px;
   }
 
+  /* 6열 → 5열 전환: 이전 nth-child(6) 반경 해제, 5번째 적용 */
   .cardGrid > :nth-child(6),
   .cardGrid > :last-child:nth-child(-n + 6) {
     border-top-right-radius: 0;
@@ -107,11 +108,9 @@
   }
 }
 
-@media (max-width: 1729px) and (min-width: 1385px) {
+@media (max-width: 1099px) and (min-width: 640px) {
   .cardGrid {
     --profile-cols: 4;
-    --profile-thumb-w: 316.09px;
-    --profile-thumb-h: 421.45px;
   }
 
   .cardGrid > :nth-child(5),
@@ -125,7 +124,7 @@
   }
 }
 
-@media (max-width: 1384px) {
+@media (max-width: 639px) and (min-width: 480px) {
   .cardGrid {
     --profile-cols: 3;
   }
@@ -141,11 +140,26 @@
   }
 }
 
+@media (max-width: 479px) {
+  .cardGrid {
+    --profile-cols: 2;
+  }
+
+  .cardGrid > :nth-child(3),
+  .cardGrid > :last-child:nth-child(-n + 3) {
+    border-top-right-radius: 0;
+  }
+
+  .cardGrid > :nth-child(2),
+  .cardGrid > :last-child:nth-child(-n + 2) {
+    border-top-right-radius: var(--profile-grid-corner-r);
+  }
+}
+
 .cardSkeleton {
   background: var(--clr-surface);
   width: 100%;
-  max-width: var(--profile-thumb-w);
-  aspect-ratio: calc(var(--profile-thumb-w) / var(--profile-thumb-h));
+  aspect-ratio: 3 / 4;
 }
 
 /* ── List ── */

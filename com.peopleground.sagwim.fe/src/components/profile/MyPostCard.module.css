@@ -1,23 +1,26 @@
 .card {
   position: relative;
   width: 100%;
-  aspect-ratio: 336.44 / 448.58;
-  overflow: hidden;
+  aspect-ratio: 3 / 4;
   background: var(--clr-bg);
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .thumbWrap {
   width: 100%;
   height: 100%;
-  overflow: hidden;
-  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .thumb {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   display: block;
 }
 
