@@ -22,6 +22,10 @@ public record GroupResponse(
 ) {
 
     public static GroupResponse from(Group group) {
+        return from(group, group.getImageUrl());
+    }
+
+    public static GroupResponse from(Group group, String resolvedImageUrl) {
         return new GroupResponse(
             group.getId(),
             group.getName(),
@@ -34,7 +38,7 @@ public record GroupResponse(
             group.getLeader().getNickname(),
             group.getLeader().getUsername(),
             group.getCreatedDate(),
-            group.getImageUrl(),
+            resolvedImageUrl,
             group.getLikeCount()
         );
     }
