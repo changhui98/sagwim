@@ -5,6 +5,9 @@ spring:
     import: optional:file:.env[.properties]
   flyway:
     locations: classpath:db/migration,classpath:db/migration/dev
+    # bootRun은 파일시스템을 재귀 스캔하므로 V3(운영 시드)까지 감지됨.
+    # dev에서는 V2(개발 시드)까지만 적용하도록 target 고정.
+    target: 2
   jpa:
     properties:
       hibernate:
