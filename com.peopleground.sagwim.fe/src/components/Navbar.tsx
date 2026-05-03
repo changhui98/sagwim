@@ -23,7 +23,6 @@ import {
   LogoutIcon,
   GridEvenMoreIcon,
   MoonIcon,
-  PeopleIcon,
   PlusSquareIcon,
   SearchIcon,
   SettingsIcon,
@@ -32,6 +31,7 @@ import {
   UserCircleIcon,
 } from './NavIcons'
 import bulbIcon from '../assets/bulb-svgrepo-com.svg'
+import clipboardHeartIcon from '../assets/clipboard-heart-svgrepo-com.svg'
 
 const ADMIN_ROLE = 'ADMIN'
 
@@ -102,7 +102,7 @@ export function Navbar({ role, onLogout }: NavbarProps) {
       to: '/app',
       label: '홈',
       icon: <HomeIcon />,
-      match: (p) => p === '/app',
+      match: (p) => p === '/app' || p.startsWith('/app/groups'),
     },
     {
       label: '검색',
@@ -111,10 +111,10 @@ export function Navbar({ role, onLogout }: NavbarProps) {
       match: () => activePanel === 'search',
     },
     {
-      to: '/app/groups',
-      label: '모임',
-      icon: <PeopleIcon />,
-      match: (p) => p.startsWith('/app/groups'),
+      to: '/app/posts',
+      label: '게시글',
+      icon: <img src={clipboardHeartIcon} alt="" aria-hidden="true" width={24} height={24} />,
+      match: (p) => p.startsWith('/app/posts'),
     },
     {
       label: '만들기',
