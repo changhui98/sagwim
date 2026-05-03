@@ -133,6 +133,16 @@ jobs:
           echo "tag=$TAG" >> "$GITHUB_OUTPUT"
           echo "배포 태그: $TAG"
 
+      - name: 홈서버 IP 조회 (Azure DNS 우회)
+        run: |
+          RESOLVED_IP=$(dig +short @8.8.8.8 ${{ secrets.HOME_SERVER_HOST }} | tail -n1)
+          if [ -z "$RESOLVED_IP" ]; then
+            echo "DuckDNS 호스트명 IP 조회 실패"
+            exit 1
+          fi
+          echo "HOME_SERVER_IP=$RESOLVED_IP" >> $GITHUB_ENV
+          echo "서버 IP: $RESOLVED_IP"
+
       - name: Docker Buildx 설정
         uses: docker/setup-buildx-action@v3
 
@@ -163,7 +173,7 @@ jobs:
       - name: 이미지 파일 홈서버로 전송
         uses: appleboy/scp-action@v0.1.7
         with:
-          host: ${{ secrets.HOME_SERVER_HOST }}
+          host: ${{ env.HOME_SERVER_IP }}
           username: ${{ secrets.HOME_SERVER_USER }}
           key: ${{ secrets.HOME_SERVER_SSH_KEY }}
           port: ${{ secrets.HOME_SERVER_PORT || '22' }}
@@ -174,7 +184,7 @@ jobs:
       - name: 배포 스크립트 전송
         uses: appleboy/scp-action@v0.1.7
         with:
-          host: ${{ secrets.HOME_SERVER_HOST }}
+          host: ${{ env.HOME_SERVER_IP }}
           username: ${{ secrets.HOME_SERVER_USER }}
           key: ${{ secrets.HOME_SERVER_SSH_KEY }}
           port: ${{ secrets.HOME_SERVER_PORT || '22' }}
@@ -184,7 +194,7 @@ jobs:
       - name: 홈서버에서 Blue-Green 배포 실행
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: ${{ secrets.HOME_SERVER_HOST }}
+          host: ${{ env.HOME_SERVER_IP }}
           username: ${{ secrets.HOME_SERVER_USER }}
           key: ${{ secrets.HOME_SERVER_SSH_KEY }}
           port: ${{ secrets.HOME_SERVER_PORT || '22' }}
