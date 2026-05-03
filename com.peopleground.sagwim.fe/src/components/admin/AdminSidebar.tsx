@@ -2,6 +2,10 @@ import { Link, useLocation } from 'react-router-dom'
 import { getInitials } from '../../utils/stringUtils'
 import type { UserDetailResponse } from '../../types/user'
 import styles from './AdminSidebar.module.css'
+import crownIcon from '../../assets/crown-svgrepo-com.svg'
+import usersIcon from '../../assets/users-svgrepo-com.svg'
+import groupIcon from '../../assets/heart-alt-svgrepo-com.svg'
+import clipboardIcon from '../../assets/clipboard-list-alt-svgrepo-com.svg'
 
 interface MenuItem {
   path: string
@@ -10,9 +14,10 @@ interface MenuItem {
 }
 
 const MENU_ITEMS: readonly MenuItem[] = [
-  { path: '/app/admin', label: 'Dashboard', icon: '📊' },
-  { path: '/app/admin/users', label: '사용자 관리', icon: '👥' },
-  { path: '/app/admin/posts', label: '게시글 관리', icon: '📝' },
+  { path: '/app/admin', label: 'Dashboard', icon: crownIcon },
+  { path: '/app/admin/users', label: '사용자 관리', icon: usersIcon },
+  { path: '/app/admin/groups', label: '모임 관리', icon: groupIcon },
+  { path: '/app/admin/posts', label: '게시글 관리', icon: clipboardIcon },
 ] as const
 
 interface AdminSidebarProps {
@@ -60,7 +65,7 @@ export function AdminSidebar({ profile }: AdminSidebarProps) {
               isActive(item.path) ? styles.menuItemActive : styles.menuItem
             }
           >
-            <span className={styles.menuIcon}>{item.icon}</span>
+            <img src={item.icon} alt={item.label} className={styles.menuIcon} />
             <span className={styles.menuLabel}>{item.label}</span>
           </Link>
         ))}
