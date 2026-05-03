@@ -15,6 +15,7 @@ import com.peopleground.sagwim.group.presentation.dto.request.GroupUpdateRequest
 import com.peopleground.sagwim.group.presentation.dto.response.GroupDetailResponse;
 import com.peopleground.sagwim.group.presentation.dto.response.GroupMemberResponse;
 import com.peopleground.sagwim.group.presentation.dto.response.GroupResponse;
+import com.peopleground.sagwim.image.application.ImageUrlResolver;
 import com.peopleground.sagwim.image.application.service.ImageService;
 import com.peopleground.sagwim.image.domain.entity.ImageTargetType;
 import com.peopleground.sagwim.image.presentation.dto.response.ImageResponse;
@@ -38,6 +39,7 @@ public class GroupService {
     private final GroupMemberRepository groupMemberRepository;
     private final UserRepository userRepository;
     private final ImageService imageService;
+    private final ImageUrlResolver imageUrlResolver;
 
     @Transactional
     public GroupResponse createGroup(GroupCreateRequest request, CustomUser customUser) {
@@ -60,14 +62,14 @@ public class GroupService {
         groupMemberRepository.save(leaderMember);
         groupRepository.incrementMemberCount(saved.getId());
 
-        return GroupResponse.from(saved);
+        return GroupResponse.from(saved, imageUrlResolver.resolve(saved.getImageUrl()));
     }
 
     @Transactional(readOnly = true)
     public PageResponse<GroupResponse> getGroups(int page, int size, String keyword, GroupCategory category) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Group> groups = groupRepository.findAll(pageable, keyword, category);
-        return PageResponse.from(groups.map(GroupResponse::from));
+        return PageResponse.from(groups.map(g -> GroupResponse.from(g, imageUrlResolver.resolve(g.getImageUrl()))));
     }
 
     /**
@@ -77,7 +79,7 @@ public class GroupService {
     public PageResponse<GroupResponse> getNewGroups(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Group> groups = groupRepository.findNewGroups(pageable);
-        return PageResponse.from(groups.map(GroupResponse::from));
+        return PageResponse.from(groups.map(g -> GroupResponse.from(g, imageUrlResolver.resolve(g.getImageUrl()))));
     }
 
     /**
@@ -87,7 +89,7 @@ public class GroupService {
     public PageResponse<GroupResponse> getPopularGroups(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Group> groups = groupRepository.findPopularGroups(pageable);
-        return PageResponse.from(groups.map(GroupResponse::from));
+        return PageResponse.from(groups.map(g -> GroupResponse.from(g, imageUrlResolver.resolve(g.getImageUrl()))));
     }
 
     @Transactional(readOnly = true)
@@ -97,7 +99,7 @@ public class GroupService {
             .stream()
             .map(GroupMemberResponse::from)
             .toList();
-        return GroupDetailResponse.of(group, members);
+        return GroupDetailResponse.of(group, imageUrlResolver.resolve(group.getImageUrl()), members);
     }
 
     @Transactional
@@ -108,7 +110,7 @@ public class GroupService {
         ImageResponse imageResponse = imageService.uploadImage(file, ImageTargetType.GROUP, String.valueOf(groupId));
         group.updateImageUrl(imageResponse.fileUrl());
 
-        return GroupResponse.from(group);
+        return GroupResponse.from(group, imageUrlResolver.resolve(group.getImageUrl()));
     }
 
     @Transactional
@@ -125,7 +127,7 @@ public class GroupService {
             request.maxMemberCount()
         );
 
-        return GroupResponse.from(group);
+        return GroupResponse.from(group, imageUrlResolver.resolve(group.getImageUrl()));
     }
 
     @Transactional
@@ -200,7 +202,7 @@ public class GroupService {
     public PageResponse<GroupResponse> getMyGroups(CustomUser customUser, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Group> groups = groupRepository.findByMemberUsername(customUser.getUsername(), pageable);
-        return PageResponse.from(groups.map(GroupResponse::from));
+        return PageResponse.from(groups.map(g -> GroupResponse.from(g, imageUrlResolver.resolve(g.getImageUrl()))));
     }
 
     private Group findGroup(Long groupId) {
