@@ -53,19 +53,71 @@ fi
 set -a; source "$ENV_FILE"; set +a
 
 # =====================================================
-# 헬스체크 함수
-# health_check <container_name> <url> <timeout_sec>
+# 백엔드 헬스체크 함수 (Docker HEALTHCHECK 상태 폴링)
+# health_check_docker <container_name> <timeout_sec>
+#
+# docker inspect 로 Docker 데몬이 관리하는 HEALTHCHECK 상태를 확인한다.
+# wget 방식과의 차이:
+#   - wget은 HTTP 응답 코드 기반이므로 /actuator/health 가 503(DOWN)을
+#     반환하면 실패로 처리되어 오탐이 발생한다.
+#   - Docker HEALTHCHECK 는 --health-cmd 종료 코드(0/1)로 판정하므로
+#     Spring Boot가 완전히 기동된 시점을 더 정확하게 잡는다.
+#
+# 타임아웃 계산 기준 (docker run 옵션 기준):
+#   --health-start-period=60s : 기동 유예 기간
+#   --health-interval=30s     : 체크 주기
+#   --health-retries=3        : 실패 허용 횟수
+#   최악 케이스 = 60 + 30 * 3 = 150s → 여유 포함 180s 권장
 # =====================================================
-health_check() {
+health_check_docker() {
     local container="$1"
-    local url="$2"
-    local timeout="${3:-90}"
+    local timeout="${2:-180}"
     local elapsed=0
     local interval=5
 
-    log_info "헬스체크 대기: $container ($url)"
+    log_info "헬스체크 대기 (Docker HEALTHCHECK): $container (최대 ${timeout}s)"
     while [[ $elapsed -lt $timeout ]]; do
-        if docker exec "$container" wget -qO- "$url" > /dev/null 2>&1; then
+        local status
+        status=$(docker inspect --format='{{.State.Health.Status}}' "$container" 2>/dev/null || true)
+
+        if [[ "$status" == "healthy" ]]; then
+            echo ""
+            log_ok "$container 헬스체크 통과 (${elapsed}s)"
+            return 0
+        fi
+
+        sleep $interval
+        elapsed=$((elapsed + interval))
+        echo -n "."
+    done
+
+    echo ""
+    log_error "$container 헬스체크 실패 (${timeout}s 초과)"
+    log_warn "--- Docker Health 진단 정보 ---"
+    docker inspect --format='{{json .State.Health}}' "$container" 2>/dev/null \
+        | python3 -m json.tool 2>/dev/null || true
+    log_warn "-------------------------------"
+    return 1
+}
+
+# =====================================================
+# 프론트엔드 헬스체크 함수 (직접 HTTP 확인)
+# health_check_http <container_name> <url> <timeout_sec>
+#
+# 프론트엔드(Nginx)는 Docker HEALTHCHECK 를 설정하지 않으므로
+# 호스트에서 wget 으로 HTTP 200 여부를 직접 확인한다.
+# =====================================================
+health_check_http() {
+    local container="$1"
+    local url="$2"
+    local timeout="${3:-30}"
+    local elapsed=0
+    local interval=5
+
+    log_info "헬스체크 대기 (HTTP): $container ($url, 최대 ${timeout}s)"
+    while [[ $elapsed -lt $timeout ]]; do
+        if wget -qO- "$url" > /dev/null 2>&1; then
+            echo ""
             log_ok "$container 헬스체크 통과 (${elapsed}s)"
             return 0
         fi
@@ -73,6 +125,7 @@ health_check() {
         elapsed=$((elapsed + interval))
         echo -n "."
     done
+
     echo ""
     log_error "$container 헬스체크 실패 (${timeout}s 초과)"
     return 1
@@ -119,7 +172,9 @@ deploy_backend() {
         "$image"
 
     # Green 헬스체크 대기
-    if ! health_check "$green" "http://localhost:8080/actuator/health" 120; then
+    # Docker HEALTHCHECK 기준: start-period 60s + interval 30s * retries 3 = 최악 150s
+    # 여유분 포함 180s 적용
+    if ! health_check_docker "$green" 180; then
         log_error "Green 배포 실패. 롤백합니다."
         docker rm -f "$green" 2>/dev/null || true
         exit 1
@@ -181,7 +236,7 @@ deploy_frontend() {
         --restart unless-stopped \
         "$image"
 
-    if ! health_check "$container" "http://127.0.0.1:80/health" 30; then
+    if ! health_check_http "$container" "http://127.0.0.1:80/health" 30; then
         log_error "프론트엔드 헬스체크 실패"
         exit 1
     fi
