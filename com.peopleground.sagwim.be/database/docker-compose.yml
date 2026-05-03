@@ -3,8 +3,8 @@ services:
     image: postgis/postgis:16-3.4
     container_name: postgis-db
     environment:
-      POSTGRES_DB: userdb
-      POSTGRES_USER: user
+      POSTGRES_DB: sagwim_develop
+      POSTGRES_USER: sagwim_dev
       POSTGRES_PASSWORD: password
     ports:
       - "5432:5432"

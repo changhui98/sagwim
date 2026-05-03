@@ -93,6 +93,7 @@ vite.config.ts.timestamp-*
 # .env.example 은 제외 (추적 대상)
 # =============================================================================
 .env
+.env.dev
 .env.local
 .env.development
 .env.development.local
@@ -104,6 +105,15 @@ vite.config.ts.timestamp-*
 .env.staging.local
 .env.*.local
 # .env.example 은 의도적으로 추적 (제외하지 않음)
+
+# =============================================================================
+# 운영 시드 데이터 (관리자 비밀번호 포함 — 절대 git 추적 금지)
+# .example 접미사가 붙은 파일도 동일하게 민감정보로 취급하여 제외
+# =============================================================================
+V3__prod_seed_data.sql
+V3__prod_seed_data.sql.example
+**/db/migration/V3__prod_seed_data.sql
+**/db/migration/V3__prod_seed_data.sql.example
 
 # =============================================================================
 # Claude Code
