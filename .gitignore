@@ -49,10 +49,10 @@ build/
 !**/src/test/**/target/
 
 # Spring Boot - 환경별 설정 파일 (application.yml/yaml 은 추적, 환경별은 제외)
+# application-prod.yaml 은 비밀값 없이 Flyway 설정만 포함 → git 추적 대상
 **/src/main/resources/application-dev.yml
 **/src/main/resources/application-dev.yaml
 **/src/main/resources/application-prod.yml
-**/src/main/resources/application-prod.yaml
 **/src/main/resources/application-staging.yml
 **/src/main/resources/application-staging.yaml
 **/src/main/resources/application-local.yml
