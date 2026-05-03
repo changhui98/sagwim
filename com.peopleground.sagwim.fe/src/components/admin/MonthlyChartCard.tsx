@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import {
   Area,
   AreaChart,
@@ -74,24 +74,31 @@ export function MonthlyChartCard({
   error = null,
   onRetry,
 }: MonthlyChartCardProps) {
+  const [expanded, setExpanded] = useState(false)
+
+  const displayData = useMemo(
+    () => (expanded ? data : data.slice(-3)),
+    [expanded, data],
+  )
+
   const chartData = useMemo<ChartDatum[]>(
     () =>
-      data.map((point) => ({
+      displayData.map((point) => ({
         label: formatMonthLabel(point.month),
         fullLabel: formatFullLabel(point.month),
         count: point.count,
       })),
-    [data],
+    [displayData],
   )
 
   const { total, latest, delta } = useMemo(() => {
     if (data.length === 0) return { total: 0, latest: 0, delta: null as number | null }
-    const sum = data.reduce((acc, p) => acc + p.count, 0)
+    const displaySum = displayData.reduce((acc, p) => acc + p.count, 0)
     const last = data[data.length - 1].count
     const prev = data.length >= 2 ? data[data.length - 2].count : null
     const diff = prev === null ? null : last - prev
-    return { total: sum, latest: last, delta: diff }
-  }, [data])
+    return { total: displaySum, latest: last, delta: diff }
+  }, [data, displayData])
 
   const gradientId = useMemo(
     () => `chart-gradient-${title.replace(/\s+/g, '-')}`,
@@ -107,6 +114,14 @@ export function MonthlyChartCard({
         </div>
         {!loading && !error && (
           <div className={styles.summary}>
+            <button
+              className={styles.viewToggle}
+              onClick={() => setExpanded((prev) => !prev)}
+              type="button"
+            >
+              {expanded ? '접기' : '전체보기'}
+            </button>
+            <div className={styles.summaryDivider} />
             <div className={styles.summaryItem}>
               <span className={styles.summaryLabel}>이번 달</span>
               <span className={styles.summaryValue} style={{ color }}>
@@ -125,7 +140,9 @@ export function MonthlyChartCard({
             </div>
             <div className={styles.summaryDivider} />
             <div className={styles.summaryItem}>
-              <span className={styles.summaryLabel}>12개월 합계</span>
+              <span className={styles.summaryLabel}>
+                {expanded ? '12개월 합계' : '3개월 합계'}
+              </span>
               <span className={styles.summaryValueSecondary}>
                 {total.toLocaleString()}
                 <span className={styles.summaryUnit}>{unit}</span>

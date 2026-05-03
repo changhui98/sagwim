@@ -3,6 +3,8 @@ package com.peopleground.sagwim.group.infrastructure.repository;
 import com.peopleground.sagwim.group.domain.entity.Group;
 import com.peopleground.sagwim.group.domain.entity.GroupCategory;
 import com.peopleground.sagwim.group.domain.repository.GroupRepository;
+import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -69,5 +71,10 @@ public class GroupRepositoryImpl implements GroupRepository {
     @Override
     public Integer findLikeCountById(Long groupId) {
         return groupJpaRepository.findLikeCountById(groupId);
+    }
+
+    @Override
+    public Map<String, Long> countMonthlyCreations(LocalDateTime windowStart) {
+        return groupQueryRepository.countMonthlyCreations(windowStart);
     }
 }

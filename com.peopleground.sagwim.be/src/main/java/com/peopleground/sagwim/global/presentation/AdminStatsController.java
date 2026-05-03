@@ -36,6 +36,14 @@ public class AdminStatsController {
         return ResponseEntity.ok(adminStatsService.getMonthlyContentCreations(months));
     }
 
+    @GetMapping("/groups/monthly-creations")
+    public ResponseEntity<MonthlyStatsResponse> getMonthlyGroupCreations(
+        @RequestParam(defaultValue = "12") int months
+    ) {
+        validateMonths(months);
+        return ResponseEntity.ok(adminStatsService.getMonthlyGroupCreations(months));
+    }
+
     private void validateMonths(int months) {
         if (months < 1 || months > 36) {
             throw new AppException(ApiErrorCode.INVALID_REQUEST);

@@ -37,6 +37,23 @@
   gap: var(--sp-4);
 }
 
+.viewToggle {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--clr-text-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0 var(--sp-1);
+  transition: color var(--transition-fast);
+  white-space: nowrap;
+  align-self: flex-start;
+}
+
+.viewToggle:hover {
+  color: var(--clr-text);
+}
+
 .summaryDivider {
   width: 1px;
   align-self: stretch;
