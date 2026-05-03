@@ -33,7 +33,8 @@ function App() {
       />
       <Route path="/sign-up" element={<SignUpPage />} />
       <Route element={<ProtectedRoute />}>
-        <Route path="/app" element={<PostListPage />} />
+        <Route path="/app" element={<GroupListPage />} />
+        <Route path="/app/posts" element={<PostListPage />} />
         <Route path="/app/posts/new" element={<PostCreatePage />} />
         <Route element={<AdminRoute />}>
           <Route path="/app/users" element={<UserGridPage />} />
