@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import {
   getAdminUsers,
   getMonthlyContentCreations,
+  getMonthlyGroupCreations,
   getMonthlySignups,
 } from '../../api/adminApi'
 import { ApiError } from '../../api/ApiError'
@@ -40,9 +41,11 @@ export function AdminDashboardPage() {
 
   const [signupStats, setSignupStats] = useState<MonthlyStatsPoint[]>([])
   const [contentStats, setContentStats] = useState<MonthlyStatsPoint[]>([])
+  const [groupStats, setGroupStats] = useState<MonthlyStatsPoint[]>([])
   const [statsLoading, setStatsLoading] = useState(true)
   const [signupError, setSignupError] = useState<string | null>(null)
   const [contentError, setContentError] = useState<string | null>(null)
+  const [groupError, setGroupError] = useState<string | null>(null)
 
   const handleUnauthorized = useCallback(
     (err: unknown) => {
@@ -99,9 +102,11 @@ export function AdminDashboardPage() {
       setStatsLoading(true)
       setSignupError(null)
       setContentError(null)
-      const [signupRes, contentRes] = await Promise.allSettled([
+      setGroupError(null)
+      const [signupRes, contentRes, groupRes] = await Promise.allSettled([
         getMonthlySignups(token, 12),
         getMonthlyContentCreations(token, 12),
+        getMonthlyGroupCreations(token, 12),
       ])
 
       if (signupRes.status === 'fulfilled') {
@@ -121,6 +126,16 @@ export function AdminDashboardPage() {
         handleUnauthorized(contentRes.reason)
         setContentError(
           describeError(contentRes.reason, '게시글 통계를 불러오지 못했습니다.'),
+        )
+      }
+
+      if (groupRes.status === 'fulfilled') {
+        setGroupStats(groupRes.value.points)
+      } else {
+        console.error('[admin] 모임 통계 로드 실패:', groupRes.reason)
+        handleUnauthorized(groupRes.reason)
+        setGroupError(
+          describeError(groupRes.reason, '모임 통계를 불러오지 못했습니다.'),
         )
       }
     } finally {
@@ -165,7 +180,7 @@ export function AdminDashboardPage() {
           title="월별 신규 가입자 수"
           subtitle="최근 12개월 · KST 기준"
           unit="명"
-          color="#c0784a"
+          color="#10b981"
           data={signupStats}
           loading={statsLoading}
           error={signupError}
@@ -179,6 +194,16 @@ export function AdminDashboardPage() {
           data={contentStats}
           loading={statsLoading}
           error={contentError}
+          onRetry={loadStats}
+        />
+        <MonthlyChartCard
+          title="월별 모임 생성 수"
+          subtitle="최근 3개월 · KST 기준"
+          unit="개"
+          color="#10b981"
+          data={groupStats}
+          loading={statsLoading}
+          error={groupError}
           onRetry={loadStats}
         />
       </div>

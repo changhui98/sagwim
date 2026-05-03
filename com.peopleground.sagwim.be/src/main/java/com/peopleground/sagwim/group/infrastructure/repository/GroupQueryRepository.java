@@ -6,11 +6,17 @@ import com.peopleground.sagwim.group.domain.entity.QGroup;
 import com.peopleground.sagwim.group.domain.entity.QGroupMember;
 import com.peopleground.sagwim.user.domain.entity.QUser;
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.Tuple;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.StringExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -164,5 +170,34 @@ public class GroupQueryRepository {
             .fetchOne();
 
         return new PageImpl<>(groups, pageable, total != null ? total : 0);
+    }
+
+    public Map<String, Long> countMonthlyCreations(LocalDateTime windowStart) {
+
+        QGroup group = QGroup.group;
+
+        StringExpression monthExpr = Expressions.stringTemplate(
+            "function('to_char_kst_month', {0})", group.createdDate);
+
+        var countExpr = group.count();
+
+        List<Tuple> results = queryFactory
+            .select(monthExpr, countExpr)
+            .from(group)
+            .where(
+                group.deletedDate.isNull(),
+                group.createdDate.goe(windowStart)
+            )
+            .groupBy(monthExpr)
+            .orderBy(monthExpr.asc())
+            .fetch();
+
+        return results.stream()
+            .collect(Collectors.toMap(
+                t -> t.get(monthExpr),
+                t -> t.get(countExpr),
+                (a, b) -> a,
+                LinkedHashMap::new
+            ));
     }
 }
