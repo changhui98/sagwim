@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import type { ContentResponse } from '../../types/post'
 import { ApiError } from '../../api/ApiError'
@@ -60,9 +60,17 @@ export function PostCard({ post, fullWidth = false }: PostCardProps) {
   // PostCard 역시 새로 마운트 되어 서버의 likedByMe 값으로 자연스럽게 초기화된다.
   const [liked, setLiked] = useState(() => post.likedByMe ?? false)
   const [likeCount, setLikeCount] = useState(() => post.likeCount ?? 0)
-  const [imageUrls] = useState<string[]>(() => post.imageUrls ?? [])
+  // imageUrls는 사용자 상호작용으로 변하지 않으므로 state로 고정하지 않고
+  // prop 값을 직접 사용한다. useState lazy initializer를 쓰면 같은 key의
+  // 컴포넌트가 재마운트되지 않아 post prop이 업데이트되어도 갱신되지 않는다.
+  const imageUrls = post.imageUrls ?? []
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [pending, setPending] = useState(false)
+
+  // imageUrls가 변경될 때(게시글 목록 새로고침 등) 슬라이드 인덱스를 초기화한다.
+  useEffect(() => {
+    setCurrentImageIndex(0)
+  }, [post.id])
 
   // setState 는 비동기라 단순 `pending` state 만으로는 같은 tick 안에서의
   // 중복 클릭을 막을 수 없다. 동기적으로 즉시 반영되는 ref 로 in-flight 를 판정.
