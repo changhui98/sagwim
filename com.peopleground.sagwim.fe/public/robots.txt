@@ -1,0 +1,18 @@
+# sagwim.com robots.txt
+
+# 모든 검색엔진 크롤러 허용
+User-agent: *
+Allow: /
+
+# 크롤링 불필요한 경로 차단 (인증 필요 페이지, 관리자 페이지)
+Disallow: /app/admin/
+Disallow: /login
+Disallow: /sign-up
+
+# API, 이미지, Swagger 차단 (크롤링 불필요)
+Disallow: /api/
+Disallow: /v3/api-docs
+Disallow: /swagger-ui/
+
+# 사이트맵 위치 명시 (구글, 네이버 모두 이 줄을 참조)
+Sitemap: https://sagwim.com/sitemap.xml
