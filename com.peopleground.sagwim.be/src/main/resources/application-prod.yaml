@@ -4,9 +4,7 @@ spring:
     init:
       mode: never
   flyway:
-    # 운영: V1(스키마)만 자동 실행, V2(개발 시드) 차단
-    # V3 관리자 시드는 홈서버에서 psql로 수동 실행
-    target: 1
+    # 운영: classpath:db/migration 에 V1만 존재 → V2(개발 시드)는 dev/ 서브폴더라 자동 차단됨
   jpa:
     properties:
       hibernate:

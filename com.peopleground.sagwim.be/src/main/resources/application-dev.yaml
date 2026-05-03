@@ -1,0 +1,29 @@
+## 개발 환경 전용 설정
+spring:
+  config:
+    # 로컬 직접 실행 시 .env 파일에서 환경변수 로드 (Docker 실행 시에는 컨테이너 환경변수 사용)
+    import: optional:file:.env[.properties]
+  flyway:
+    locations: classpath:db/migration,classpath:db/migration/dev
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+  sql:
+    init:
+      mode: never
+
+## p6spy - 개발 환경에서만 활성화
+decorator:
+  datasource:
+    p6spy:
+      enable-logging: on
+
+## 개발 로그 레벨
+logging:
+  level:
+    root: info
+    web: debug
+    com.peopleground: debug
+    org.flywaydb: debug
