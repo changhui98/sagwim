@@ -162,7 +162,7 @@ deploy_backend() {
     # 스크립트 상수로 강제 지정한다. --env-file 이후 -e 플래그로 override해도
     # 쉘이 source한 환경변수를 ${VAR:-fallback} 문법으로 참조하면 .env 값이 그대로
     # 들어오기 때문에, 아래처럼 리터럴 값을 직접 명시하는 것이 안전하다.
-    local cors_origins="https://sagwim.com,http://sagwim.com,http://sagwim.duckdns.org"
+    local cors_origins="https://sagwim.com,https://www.sagwim.com,http://sagwim.com,http://www.sagwim.com,http://sagwim.duckdns.org"
 
     docker run -d \
         --name "$green" \
