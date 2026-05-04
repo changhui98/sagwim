@@ -82,7 +82,7 @@ app:
     upload-dir: ${IMAGE_UPLOAD_DIR:./uploads/images}
     url-prefix: ${IMAGE_URL_PREFIX:/images}
   cors:
-    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:5173}
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:5173,https://sagwim.com,http://sagwim.com,http://sagwim.duckdns.org}
 
 ## 소셜 로그인 OAuth2
 oauth2:

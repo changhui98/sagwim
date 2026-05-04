@@ -158,6 +158,12 @@ deploy_backend() {
     # docker-compose.yml의 environment 기본값은 docker run에 적용되지 않으므로
     # CORS_ALLOWED_ORIGINS, IMAGE_URL_PREFIX 등을 명시적으로 주입한다.
     log_info "Green 컨테이너 기동 중..."
+    # CORS_ALLOWED_ORIGINS는 .env 값(구 도메인이 남아있을 수 있음)에 오염되지 않도록
+    # 스크립트 상수로 강제 지정한다. --env-file 이후 -e 플래그로 override해도
+    # 쉘이 source한 환경변수를 ${VAR:-fallback} 문법으로 참조하면 .env 값이 그대로
+    # 들어오기 때문에, 아래처럼 리터럴 값을 직접 명시하는 것이 안전하다.
+    local cors_origins="https://sagwim.com,http://sagwim.com,http://sagwim.duckdns.org"
+
     docker run -d \
         --name "$green" \
         --network sagwim_sagwim-net \
@@ -168,7 +174,7 @@ deploy_backend() {
         -e REDIS_HOST=sagwim-redis \
         -e IMAGE_UPLOAD_DIR=/app/uploads/images \
         -e IMAGE_URL_PREFIX="${IMAGE_URL_PREFIX:-/images}" \
-        -e CORS_ALLOWED_ORIGINS="${CORS_ALLOWED_ORIGINS:-https://sagwim.com}" \
+        -e CORS_ALLOWED_ORIGINS="$cors_origins" \
         -v sagwim_uploads_data:/app/uploads \
         --health-cmd="wget -qO- http://localhost:8080/actuator/health || exit 1" \
         --health-interval=30s \
