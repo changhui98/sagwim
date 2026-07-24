@@ -12,6 +12,7 @@ import { CtaSection } from '../../src/components/landing/CtaSection'
 import { FeaturesSection } from '../../src/components/landing/FeaturesSection'
 import { HeroSection } from '../../src/components/landing/HeroSection'
 import { HowItWorksSection } from '../../src/components/landing/HowItWorksSection'
+import { LandingBottomBar } from '../../src/components/landing/LandingBottomBar'
 import { LandingHeader } from '../../src/components/landing/LandingHeader'
 import { ValueSection } from '../../src/components/landing/ValueSection'
 import { RevealScrollContext, useRevealScrollController } from '../../src/hooks/useRevealOnScroll'
@@ -48,6 +49,7 @@ export default function LandingScreen() {
           <View style={{ height: 24 }} />
         </ScrollView>
       </RevealScrollContext.Provider>
+      <LandingBottomBar onSignUp={goSignUp} onLogin={goLogin} />
     </SafeAreaView>
   )
 }
