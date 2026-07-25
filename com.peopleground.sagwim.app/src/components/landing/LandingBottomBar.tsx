@@ -106,6 +106,26 @@ export function LandingBottomBar({ onSignUp, onLogin, isHome = true, onHome }: L
             </GradientBox>
           </View>
         </Pressable>
+
+        {/* 메시지 — 회원 전용, 게스트는 가입/로그인 유도 (웹 ChatIcon 말풍선+점3개) */}
+        <Pressable
+          style={({ pressed }) => [styles.tab, pressed && styles.pressed]}
+          onPress={openGate}
+          accessibilityRole="button"
+          accessibilityLabel="메시지"
+        >
+          <Ionicons name="chatbubble-ellipses-outline" size={ICON_SIZE} color={colors.textMuted} />
+        </Pressable>
+
+        {/* 프로필 — 회원 전용, 게스트는 가입/로그인 유도 (웹 UserCircleIcon) */}
+        <Pressable
+          style={({ pressed }) => [styles.tab, pressed && styles.pressed]}
+          onPress={openGate}
+          accessibilityRole="button"
+          accessibilityLabel="프로필"
+        >
+          <Ionicons name="person-circle-outline" size={ICON_SIZE} color={colors.textMuted} />
+        </Pressable>
       </View>
 
       <AuthRequiredModal
