@@ -43,6 +43,8 @@ import { TextField } from '../../src/components/TextField'
 import { PasswordChecklist } from '../../src/components/PasswordChecklist'
 import { PrimaryButton } from '../../src/components/PrimaryButton'
 import { SecondaryButton } from '../../src/components/SecondaryButton'
+import { KakaoSymbol, GoogleGLogo } from '../../src/components/SocialIcons'
+import { LandingBottomBar } from '../../src/components/landing/LandingBottomBar'
 import { isPasswordValid, isConfirmPasswordValid } from '../../src/utils/passwordRules'
 import { spacing, radius, fontSize } from '../../src/constants/theme'
 import { useTheme } from '../../src/context/ThemeContext'
@@ -356,13 +358,14 @@ export default function SignUpScreen() {
     kakaoBtn: { backgroundColor: '#FEE500', borderColor: '#FEE500' },
     googleBtn: { backgroundColor: colors.surface },
     oauthBtnText: { fontSize: fontSize.base, fontWeight: '500', color: colors.text },
+    kakaoBtnText: { color: 'rgba(0,0,0,0.85)' },
     footer: { flexDirection: 'row', justifyContent: 'center', marginTop: spacing.sp5 },
     footerText: { fontSize: fontSize.sm, color: colors.textMuted },
     footerLink: { fontSize: fontSize.sm, color: colors.accent, fontWeight: '600' },
   }), [colors])
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <SafeAreaView style={styles.safeArea} edges={['top']}>
       <KeyboardAvoidingView
         style={styles.flex}
         behavior="padding"
@@ -568,8 +571,9 @@ export default function SignUpScreen() {
                 disabled={oauthLoading || loading}
                 onPress={handleKakaoLogin}
               >
-                <Text style={styles.oauthBtnText}>
-                  {oauthLoading ? '처리 중…' : '카카오로 가입하기'}
+                <KakaoSymbol size={18} />
+                <Text style={[styles.oauthBtnText, styles.kakaoBtnText]}>
+                  {oauthLoading ? '처리 중…' : '카카오로 시작하기'}
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
@@ -577,8 +581,9 @@ export default function SignUpScreen() {
                 disabled={oauthLoading || loading}
                 onPress={handleGoogleLogin}
               >
+                <GoogleGLogo size={18} />
                 <Text style={styles.oauthBtnText}>
-                  {oauthLoading ? '처리 중…' : '구글로 가입하기'}
+                  {oauthLoading ? '처리 중…' : 'Google로 계속하기'}
                 </Text>
               </TouchableOpacity>
             </View>
@@ -593,6 +598,12 @@ export default function SignUpScreen() {
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
+      <LandingBottomBar
+        isHome={false}
+        onHome={() => router.navigate('/(auth)/landing')}
+        onSignUp={() => {}}
+        onLogin={() => router.push('/(auth)/login')}
+      />
     </SafeAreaView>
   )
 }
