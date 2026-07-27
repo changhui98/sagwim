@@ -188,7 +188,7 @@ export function HomePage() {
 
           <div className={styles.divider}>또는</div>
 
-          <SocialLoginButtons redirectUri={REDIRECT_URI} variant="continue" />
+          <SocialLoginButtons redirectUri={REDIRECT_URI} variant="login" />
 
           <p className={styles.footer}>
             아직 계정이 없으신가요?{' '}

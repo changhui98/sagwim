@@ -551,7 +551,7 @@ export function SignUpPage() {
 
         <div className={styles.divider}>또는</div>
 
-        <SocialLoginButtons redirectUri={REDIRECT_URI} />
+        <SocialLoginButtons redirectUri={REDIRECT_URI} variant="signup" />
 
         <p className={styles.footer}>
           이미 계정이 있으신가요?{' '}
