@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { BrandLogo } from '../components/NavIcons'
+import { Navbar } from '../components/Navbar'
 import { useLoginForm } from '../hooks/useLoginForm'
+import { useLogout } from '../hooks/useLogout'
 import { PasswordInput } from '../components/PasswordInput'
 import { SocialLoginButtons } from '../components/auth/SocialLoginButtons'
 import { SocialAddressModal } from '../components/auth/SocialAddressModal'
@@ -23,7 +25,8 @@ const PROVIDER_LABEL: Record<string, string> = {
 export function HomePage() {
   const location = useLocation()
   const navigate = useNavigate()
-  const { login, token } = useAuth()
+  const { login, token, meRole } = useAuth()
+  const handleLogout = useLogout()
   const nextPath = (location.state as { from?: string } | null)?.from ?? '/app'
   const { form, setForm, loading, error, handleSubmit } = useLoginForm({
     redirectTo: nextPath,
@@ -140,6 +143,9 @@ export function HomePage() {
 
   return (
     <>
+      {/* 모바일(≤640px) 게스트 하단 탭바 — 데스크탑에서는 CSS로 숨겨진다(Header가 네비 담당) */}
+      <Navbar role={meRole} onLogout={handleLogout} />
+
       <main className={styles.root}>
         <section className={`card animate-scale-in ${styles.card}`}>
           {/* Brand */}

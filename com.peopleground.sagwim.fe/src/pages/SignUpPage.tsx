@@ -8,8 +8,10 @@ import { PasswordInput } from '../components/PasswordInput'
 import { PasswordChecklist } from '../components/PasswordChecklist'
 import { SocialLoginButtons } from '../components/auth/SocialLoginButtons'
 import { ConfirmDialog } from '../components/common/ConfirmDialog'
+import { Navbar } from '../components/Navbar'
 import { isPasswordValid, isConfirmPasswordValid } from '../utils/passwordRules'
 import { useAuth } from '../context/AuthContext'
+import { useLogout } from '../hooks/useLogout'
 import styles from './SignUpPage.module.css'
 import { AlertDialog } from '../components/common/AlertDialog'
 
@@ -45,7 +47,8 @@ const isDuplicateEmailMessage = (message: string): boolean => {
 export function SignUpPage() {
   const navigate = useNavigate()
   const location = useLocation()
-  const { login } = useAuth()
+  const { login, meRole } = useAuth()
+  const handleLogout = useLogout()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
@@ -350,6 +353,9 @@ export function SignUpPage() {
 
   return (
     <>
+    {/* 모바일(≤640px) 게스트 하단 탭바 — 데스크탑에서는 CSS로 숨겨진다(Header가 네비 담당) */}
+    <Navbar role={meRole} onLogout={handleLogout} />
+
     <main className={styles.root}>
       <section className={`card animate-scale-in ${styles.card}`}>
         <Link to="/" className={styles.backLink}>

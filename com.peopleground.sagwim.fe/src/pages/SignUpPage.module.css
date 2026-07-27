@@ -6,6 +6,9 @@
   align-items: center;
   justify-content: center;
   padding: var(--sp-6);
+  /* 모바일(≤640px) 하단 고정 탭바(Navbar)만큼 하단 여백 확보.
+     --layout-bottom-bar-h 는 ≥641px에서 0px 이므로 데스크탑 여백은 기존과 동일하다. */
+  padding-bottom: calc(var(--sp-6) + var(--layout-bottom-bar-h) + env(safe-area-inset-bottom, 0px));
   position: relative;
   overflow: hidden;
 }
@@ -157,7 +160,8 @@
   /* 루트: 흰색 배경으로 전환 */
   .root {
     background: var(--clr-surface);
-    padding: var(--sp-8) 0;
+    /* 단축 padding이라 base 규칙의 padding-bottom을 덮어쓴다 — 하단바 여백을 여기서 다시 더한다. */
+    padding: var(--sp-8) 0 calc(var(--sp-8) + var(--layout-bottom-bar-h) + env(safe-area-inset-bottom, 0px));
   }
 
   /* 카드 컨테이너: 데스크탑 카드 외관 전부 제거 */

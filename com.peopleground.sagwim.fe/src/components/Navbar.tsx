@@ -70,6 +70,14 @@ export function Navbar({ role, onLogout }: NavbarProps) {
     setActivePanel(null)
   }, [])
 
+  /**
+   * 회원 전용 화면으로 가는 탭의 링크 속성.
+   * 로그인 상태면 평범한 Link, 게스트면 이동하지 않고 인증 게이트 모달만 연다.
+   * (앱 LandingBottomBar가 게스트 탭을 openGate로 처리해 현재 화면에 머무는 것과 동일 동작)
+   */
+  const memberOnlyLink = (to: string): Pick<NavItem, 'to' | 'onClick'> =>
+    isAuthenticated ? { to } : { onClick: openAuthGate }
+
   const navItems: NavItem[] = [
     {
       // 로그인 유저의 홈 = 모임 허브 (모바일 하단 바에서 모임 리스트 직행 진입점)
@@ -93,7 +101,7 @@ export function Navbar({ role, onLogout }: NavbarProps) {
       mobileHidden: true,
     },
     {
-      to: '/app/posts',
+      ...memberOnlyLink('/app/posts'),
       label: '게시글',
       icon: <PostsIcon />,
       match: (p) => p.startsWith('/app/posts'),
@@ -120,7 +128,7 @@ export function Navbar({ role, onLogout }: NavbarProps) {
       createItem: true,
     },
     {
-      to: '/app/messages',
+      ...memberOnlyLink('/app/messages'),
       label: '메시지',
       icon: (
         <span className={styles.navIconWrap}>
@@ -136,10 +144,9 @@ export function Navbar({ role, onLogout }: NavbarProps) {
         </span>
       ),
       match: (p) => p.startsWith('/app/messages'),
-      authOnly: true,
     },
     {
-      to: '/app/profile',
+      ...memberOnlyLink('/app/profile'),
       label: '프로필',
       icon: meProfileImageUrl ? (
         <span className={styles.navAvatar} aria-hidden="true">
@@ -149,7 +156,6 @@ export function Navbar({ role, onLogout }: NavbarProps) {
         <UserCircleIcon />
       ),
       match: (p) => p.startsWith('/app/profile'),
-      authOnly: true,
     },
     {
       label: '알림',
