@@ -38,7 +38,8 @@
   width: 4.5rem;
   height: 4.5rem;
   display: block;
-  margin: 0 auto var(--sp-4);
+  /* line-height 1.6이 만드는 상단 여백(≈0.26em)이 로고와의 간격을 대신하므로 margin-bottom 0. */
+  margin: 0 auto;
 }
 
 .brandName {
@@ -46,8 +47,12 @@
   font-size: 2.5rem;
   font-weight: 300;
   color: var(--clr-accent);
-  line-height: 1.2;
-  margin-top: -0.5rem;
+  /* Playwrite IE(손글씨)는 어센더/디센더가 매우 커서(어센트 1.396em + 디센트 0.479em)
+     line-height 1.2면 'g' 꼬리가 라인박스를 넘어 아래 .tagline 글자와 겹친다.
+     겹치지 않으려면 margin-bottom ≥ 0.958em − line-height/2 이어야 한다.
+     1.6 + 12px 이면 40px 기준 5.7px, 48px(모바일) 기준 4.4px 여유가 남는다. */
+  line-height: 1.6;
+  margin-top: 0;
   margin-bottom: var(--sp-3);
   letter-spacing: 0.01em;
 }
@@ -131,12 +136,12 @@
   .brandMark {
     width: 5rem;
     height: 5rem;
-    margin-bottom: var(--sp-3);
   }
 
+  /* margin-bottom은 데스크탑의 var(--sp-3)을 그대로 쓴다 —
+     font-size가 3rem으로 커지는 만큼 겹침 여유도 함께 커져야 하기 때문. */
   .brandName {
     font-size: 3rem;
-    margin-bottom: var(--sp-2);
   }
 
   .tagline {
