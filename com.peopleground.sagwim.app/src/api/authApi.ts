@@ -122,10 +122,14 @@ export const socialSignIn = async (
       nickname: response.data.nickname ?? '',
     }
   } catch (err: unknown) {
-    // axios는 4xx/5xx 응답을 자동으로 throw함
-    const axiosError = err as { response?: { status?: number; data?: { accessToken?: string; provider?: string } } }
-    if (axiosError?.response?.status === 409) {
-      const body = axiosError.response.data
+    // apiClient의 response 인터셉터가 AxiosError를 status/code/data가 붙은 Error로
+    // 변환해 reject하므로, err.response가 아니라 err.status/err.data를 읽는다.
+    const apiError = err as {
+      status?: number
+      data?: { accessToken?: string; provider?: string }
+    }
+    if (apiError?.status === 409) {
+      const body = apiError.data
       if (body?.accessToken && body?.provider) {
         return {
           type: 'email_conflict',
