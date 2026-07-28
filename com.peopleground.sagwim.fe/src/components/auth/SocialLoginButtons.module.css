@@ -5,20 +5,23 @@
   width: 100%;
 }
 
+/* 앱(app/(auth)/login.tsx oauthBtn)과 동일 수치 —
+   height 48 / radius.md 10 / fontSize.base 14 / weight 500 / borderWidth 1.
+   아이콘+텍스트를 한 덩어리로 중앙 정렬한다(grid 좌측 고정이던 기존 방식은 시각 중앙이 밀렸다). */
 .btn {
-  display: grid;
-  grid-template-columns: 20px 1fr;
+  display: flex;
   align-items: center;
+  justify-content: center;
   gap: var(--sp-3);
   width: 100%;
-  padding: 0.75rem var(--sp-4);
+  height: 48px;
+  padding: 0 var(--sp-4);
   border-radius: var(--r-md);
-  font-size: 0.9375rem;
-  font-weight: 600;
+  font-size: 0.875rem;
+  font-weight: 500;
   cursor: pointer;
-  border: none;
+  border: 1px solid var(--clr-border);
   transition: opacity var(--t-fast), box-shadow var(--t-fast);
-  text-align: center;
 }
 
 .btn:hover:not(:disabled) {
@@ -35,21 +38,21 @@
   cursor: not-allowed;
 }
 
-/* 카카오 */
+/* 카카오 — 브랜드 규정색. 토큰을 쓰지 않아 다크모드에서도 노랑 배경 + 검정 텍스트가 고정된다. */
 .kakaoBtn {
   background-color: #FEE500;
-  color: #3B1E1E;
+  border-color: #FEE500;
+  color: rgba(0, 0, 0, 0.85);
 }
 
-/* 구글 */
+/* 구글 — 앱 googleBtn(colors.surface) 대응. 다크에서 #0d0d0d 배경 + 밝은 텍스트로 자동 전환된다. */
 .googleBtn {
-  background-color: #ffffff;
-  color: #1a1a1a;
-  border: 1px solid var(--clr-border-strong);
+  background-color: var(--clr-surface);
+  color: var(--clr-text);
 }
 
 .icon {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   flex-shrink: 0;
 }

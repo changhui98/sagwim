@@ -57,9 +57,16 @@ apiClient.interceptors.response.use(
           : getDefaultMessage(status)
 
         const serverCode = error.response.data?.code
-        const apiError = new Error(message) as Error & { status?: number; code?: string }
+        const apiError = new Error(message) as Error & {
+          status?: number
+          code?: string
+          data?: unknown
+        }
         apiError.status = status
         if (typeof serverCode === 'string') apiError.code = serverCode
+        // 응답 바디를 함께 싣는다. 409 소셜 이메일 충돌처럼 message/code 외의 필드
+        // (accessToken, provider)를 호출부가 읽어야 하는 경우가 있다.
+        apiError.data = error.response.data
         return Promise.reject(apiError)
       }
 
