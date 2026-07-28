@@ -92,6 +92,10 @@ app:
     allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:5173,https://sagwim.com,http://sagwim.com,http://sagwim.duckdns.org}
   log:
     dir: ${LOG_DIR:./logs}
+  mobile:
+    # 소셜 로그인 브릿지 콜백이 302 로 되돌려보낼 앱 커스텀 스킴 URL.
+    # 클라이언트가 보낸 값이 아니라 이 상수만 리다이렉트 대상으로 사용한다 (open redirect 방지).
+    oauth-callback-url: ${MOBILE_OAUTH_CALLBACK_URL:sagwim://oauth}
   crypto:
     # userEmail 결정론적 AES-256 암호화 키 (Base64 인코딩된 32바이트)
     # 운영/실배포 환경은 반드시 EMAIL_ENCRYPTION_KEY 환경변수로 진짜 키를 주입한다.
